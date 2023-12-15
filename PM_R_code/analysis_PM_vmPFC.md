@@ -10,6 +10,13 @@ fig_width: 8
 
 # Analysis
 
+<style type="text/css">
+img {
+max-width:150%;
+height: auto;
+}
+</style>
+
 ## Set up and functions
 
 
