@@ -746,27 +746,27 @@ if (choice.con.ag$p.value[choice.con.ag$contrast == "self LC / other LC"] < .05)
 i <- i + 1
 
 # comparing self - other difference between groups [see below if error here]
-if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] < .05) { choice.sig[1,i] <- "*"
-} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] >= .05) { choice.sig[1,i] <- NA }
-i <- i + 1
-if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] < .05) { choice.sig[1,5] <- "*"
-} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
-i <- i + 1
-if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] < 0.05) { choice.sig[1,i] <- "*"
-} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
-i <- i + 1
+# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] < .05) { choice.sig[1,i] <- "*"
+# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] >= .05) { choice.sig[1,i] <- NA }
+# i <- i + 1
+# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] < .05) { choice.sig[1,5] <- "*"
+# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
+# i <- i + 1
+# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] < 0.05) { choice.sig[1,i] <- "*"
+# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
+# i <- i + 1
 
 ## depending on package versions notation may use "-" instead of "/" in section above
 # comparing self - other difference between groups
-# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] < .05) { choice.sig[1,i] <- "*"
-# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] >= .05) { choice.sig[1,i] <- NA }
-# i <- i + 1
-# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] < .05) { choice.sig[1,5] <- "*"
-# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
-# i <- i + 1
-# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] < 0.05) { choice.sig[1,i] <- "*"
-# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
-# i <- i + 1
+if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] < .05) { choice.sig[1,i] <- "*"
+} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] >= .05) { choice.sig[1,i] <- NA }
+i <- i + 1
+if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] < .05) { choice.sig[1,5] <- "*"
+} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
+i <- i + 1
+if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] < 0.05) { choice.sig[1,i] <- "*"
+} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
+i <- i + 1
 
 colnames(choice.sig) <- sig.order
 
@@ -2142,7 +2142,7 @@ plot.all.choiceV.Achoice.raw <- ggplot(df.map.patients, aes(x = choice_vox_bin, 
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#e67b4c', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#e67b4c') +
-  scale_x_discrete(name = "Area 14m & 32") +
+  scale_x_discrete(name = "Areas 14 & 25") +
   scale_y_continuous(name = "Other vs. self choice difference<br><span style='font-size:14pt'>(arbitrary units)</span style'>") +
   scale_colour_manual(values = c('#f5b093', '#f5b093')) +
   scale_fill_manual(values = c('#db5a21', '#db5a21')) +
@@ -2163,7 +2163,7 @@ plot.all.choiceV.Achoice <- ggplot(df.map.patients, aes(x = choice_vox_bin, y = 
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#e67b4c', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#e67b4c') +
-  scale_x_discrete(name = "Area 14m & 32") +
+  scale_x_discrete(name = "Areas 14 & 25") +
   scale_y_continuous(name = "Other vs. self choice difference (rank)") +
   scale_colour_manual(values = c('#f5b093', '#f5b093')) +
   scale_fill_manual(values = c('#db5a21', '#db5a21')) +
@@ -2188,7 +2188,7 @@ plot.all.kV.Rk.raw <- ggplot(df.map.patients, aes(x = k_vox_bin, y = -1 * Recipi
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#890000', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#C87E80') +
-  scale_x_discrete(name = "Area 14m & sgACC", position = "top") +
+  scale_x_discrete(name = "Areas 14 & 25", position = "top") +
   scale_y_continuous(name = paste0("Other vs. self *\u039A* difference<br><span style='font-size:14pt'>(arbitrary units)</span style'>"), trans = "reverse") +
   scale_colour_manual(values = c('#C87E80', '#C87E80')) +
   scale_fill_manual(values = c('#890000', '#890000')) +
@@ -2209,7 +2209,7 @@ plot.all.kV.Rk <- ggplot(df.map.patients, aes(x = k_vox_bin, y = k_effect_rank, 
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#890000', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#C87E80') +
-  scale_x_discrete(name = "Area 14m & sgACC", position = "top") +
+  scale_x_discrete(name = "Areas 14 & 25", position = "top") +
   scale_y_continuous(name = paste0("Other vs. self *\u039A* difference (rank)"), trans = "reverse") +
   scale_colour_manual(values = c('#C87E80', '#C87E80')) +
   scale_fill_manual(values = c('#890000', '#890000')) +
@@ -2233,7 +2233,7 @@ plot.all.choiceV.Schoice <- ggplot(df.map.patients, aes(x = choice_vox_bin, y = 
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[1], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = agent.fills[1]) +
-  scale_x_discrete(name = "Area 14m & 32") +
+  scale_x_discrete(name = "Areas 14 & 25") +
   scale_y_continuous(name = "Proportion accept for self") +
   scale_color_manual(values = c(agent.colours[1],agent.colours[1])) +
   scale_fill_manual(values = c(agent.fills[1],agent.fills[1])) +
@@ -2255,7 +2255,7 @@ plot.all.choiceV.Ochoice <- ggplot(df.map.patients, aes(x = choice_vox_bin, y = 
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[2], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = agent.fills[2]) +
-  scale_x_discrete(name = "Area 14m & 32") +
+  scale_x_discrete(name = "Areas 14 & 25") +
   scale_y_continuous(name = "Proportion accept for other") +
   scale_color_manual(values = c(agent.colours[2],agent.colours[2])) +
   scale_fill_manual(values = c(agent.fills[2],agent.fills[2])) +
@@ -2277,7 +2277,7 @@ plot.all.kV.Sk <- ggplot(df.map.patients, aes(x = k_vox_bin, y = PM_self_k, fill
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[1], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = agent.fills[1]) +
-  scale_x_discrete(name = "Area 14m & sgACC", position = "top") +
+  scale_x_discrete(name = "Areas 14 & 25", position = "top") +
   scale_y_continuous(name = paste0("Self *\u039A*"), trans = "reverse") +
   scale_color_manual(values = c(agent.colours[1],agent.colours[1])) +
   scale_fill_manual(values = c(agent.fills[1],agent.fills[1])) +
@@ -2299,7 +2299,7 @@ plot.all.kV.Ok <- ggplot(df.map.patients, aes(x = k_vox_bin, y = PM_other_k, fil
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[2], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = agent.fills[1]) +
-  scale_x_discrete(name = "Area 14m & sgACC", position = "top") +
+  scale_x_discrete(name = "Areas 14 & 25", position = "top") +
   scale_y_continuous(name = paste0("Other *\u039A*"), trans = "reverse") +
   scale_color_manual(values = c(agent.colours[2],agent.colours[2])) +
   scale_fill_manual(values = c(agent.fills[2],agent.fills[2])) +
@@ -2385,7 +2385,7 @@ plot.vmpfc.choiceV.Achoice.raw <- ggplot(df.map.patients, aes(x = choice_vox_bin
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#020085', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#7F8BC4') +
-  scale_x_discrete(name = "Area 13a/b damage") +
+  scale_x_discrete(name = "Area 13") +
   scale_y_continuous(name = "Other vs. self choice difference<br><span style='font-size:14pt'>(arbitrary units)</span style'>") +
   scale_colour_manual(values = c('#7F8BC4', '#7F8BC4')) +
   scale_fill_manual(values = c('#BFC5E2', '#BFC5E2')) +
@@ -2408,7 +2408,7 @@ plot.vmpfc.kV.Rk.raw <- ggplot(df.map.patients, aes(x = k_vox_bin, y = -1 * Reci
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#009087', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#94C9C4') +
-  scale_x_discrete(name = "Area 13a/b damage", position = "top") +
+  scale_x_discrete(name = "Area 13", position = "top") +
   scale_y_continuous(name = "Other vs. self k difference<br><span style='font-size:14pt'>(arbitrary units)</span style'>", trans = "reverse") +
   scale_colour_manual(values = c('#94C9C4', '#94C9C4')) +
   scale_fill_manual(values = c('#009087', '#009087')) +
@@ -2433,7 +2433,7 @@ plot.vmpfc.choiceV.Achoice <- ggplot(df.map.patients, aes(x = choice_vox_bin, y 
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#020085', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#7F8BC4') +
-  scale_x_discrete(name = "Area 13a/b damage") +
+  scale_x_discrete(name = "Area 13") +
   scale_y_continuous(name = "Other vs. self choice difference (rank)") +
   scale_colour_manual(values = c('#7F8BC4', '#7F8BC4')) +
   scale_fill_manual(values = c('#BFC5E2', '#BFC5E2')) +
@@ -2455,7 +2455,7 @@ plot.vmpfc.kV.Rk <- ggplot(df.map.patients, aes(x = k_vox_bin, y = k_effect_rank
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = '#009087', size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = '#94C9C4') +
-  scale_x_discrete(name = "Area 13a/b damage", position = "top") +
+  scale_x_discrete(name = "Area 13", position = "top") +
   scale_y_continuous(name = "Other vs. self k difference (rank)", trans = "reverse") +
   scale_colour_manual(values = c('#94C9C4', '#94C9C4')) +
   scale_fill_manual(values = c('#009087', '#009087')) +
@@ -2486,7 +2486,7 @@ plot.vmpfc.kV.Sk <- ggplot(df.map.patients, aes(x = k_vox_bin, y = PM_self_k, co
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[1], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5) + 
-  scale_x_discrete(name = paste0("Area 13a/b damage"), position = "top") +
+  scale_x_discrete(name = paste0("Area 13"), position = "top") +
   scale_y_continuous(name = paste0('*\u039A*<sub>self</sub>'), trans = "reverse") +
   scale_color_manual(values = c(agent.colours[1],agent.colours[1])) +
   scale_fill_manual(values = c(agent.fills[1],agent.fills[1])) +
@@ -2507,7 +2507,7 @@ plot.vmpfc.kV.Ok <- ggplot(df.map.patients, aes(x = k_vox_bin, y = PM_other_k, c
   stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", conf.int=.95, position=position_dodge(0.75), width = 0, alpha = 1) +
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[2], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5) + 
-  scale_x_discrete(name = paste0("Area 13a/b damage"), position = "top") +
+  scale_x_discrete(name = paste0("Area 13"), position = "top") +
   scale_y_continuous(name = paste0('*\u039A*<sub>other</sub>'), trans = "reverse") +
   scale_color_manual(values = c(agent.colours[2],agent.colours[2])) +
   scale_fill_manual(values = c(agent.fills[2],agent.fills[2])) +
@@ -3260,7 +3260,7 @@ map.SO.allp.plt <- plot_grid(choice.lab, plot.all.choiceV.Ochoice, choice.lab, p
 print(map.SO.allp.plt)
 
 ```
-**Figure S4. Damage to medial vmPFC regions decreases willingness to exert effort for others and increases willingness to obtain self-benefitting rewards.** To further interpret the voxel-based lesion symptom mapping (VLSM) finding of decreased prosociality with damage to portions of vmPFC on the medial wall (area 14m and 32), we plotted each recipient separately to examine how damage affects **(a)** choices for other **(b)** choices for self **(c)** discounting `r paste(klabel)`s for other and **(d)** discounting `r "<i>\u039A</i>"` parameters for self. We categorised participants by whether they had damage or not in the areas identified in the VLSM analysis for each effect (choices and `r "<i>\u039A</i>"`; see Figure 6A). These plots suggest that decreased prosociality shown by the recipient effects (other vs. self) in the VLSM are driven by both lower willingness to help the other person and higher willingness to work for oneself in patients with damage to these regions.
+**Figure S4. Damage to medial vmPFC regions decreases willingness to exert effort for others and increases willingness to obtain self-benefitting rewards.** To further interpret the voxel-based lesion symptom mapping (VLSM) finding of decreased prosociality with damage to portions of vmPFC on the medial wall (areas 14 and 25), we plotted each recipient separately to examine how damage affects **(a)** choices for other **(b)** choices for self **(c)** discounting `r paste(klabel)`s for other and **(d)** discounting `r "<i>\u039A</i>"` parameters for self. We categorised participants by whether they had damage or not in the areas identified in the VLSM analysis for each effect (choices and `r "<i>\u039A</i>"`; see Figure 6A). These plots suggest that decreased prosociality shown by the recipient effects (other vs. self) in the VLSM are driven by both lower willingness to help the other person and higher willingness to work for oneself in patients with damage to these regions.
 
 #### Figure S5
 
@@ -3274,7 +3274,7 @@ map.SO.k.plt <- plot_grid(k.lab, plot.vmpfc.kV.Ok, k.lab, plot.vmpfc.kV.Sk,
 print(map.SO.k.plt)
 
 ```
-**Figure S5. Damage to lateral vmPFC increases willingness to help others and decreases willingness to exert effort for oneself.** Our voxel-based lesion symptom mapping (VLSM) analysis identified a lateral portion of vmPFC in area 13a/b where damage was paradoxically associated with increased prosociality. To further interpret this finding, we extracted the extent of damage for each participant in the region identified in the VLSM analysis of the recipient effect (other vs. self) on `r paste(klabel)`. The corresponding effect on choices was associated with a smaller, overlapping region of area 13a/b (see Figure 7). Plotting damage in this region against **(a)** discounting `r paste(klabel)` for other and **(b)** discounting `r paste(klabel)` for self separately shows the increase in relative prosociality is driven by both lower discounting (higher willingness to work) for other and higher discounting (lower willingness to work) to some extent for self.
+**Figure S5. Damage to lateral vmPFC increases willingness to help others and decreases willingness to exert effort for oneself.** Our voxel-based lesion symptom mapping (VLSM) analysis identified a lateral portion of vmPFC in area 13 where damage was paradoxically associated with increased prosociality. To further interpret this finding, we extracted the extent of damage for each participant in the region identified in the VLSM analysis of the recipient effect (other vs. self) on `r paste(klabel)`. The corresponding effect on choices was associated with a smaller, overlapping region of area 13 (see Figure 7). Plotting damage in this region against **(a)** discounting `r paste(klabel)` for other and **(b)** discounting `r paste(klabel)` for self separately shows the increase in relative prosociality is driven by both lower discounting (higher willingness to work) for other and higher discounting (lower willingness to work) to some extent for self.
 
 #### Table S0 (new S1)
 

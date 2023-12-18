@@ -781,12 +781,12 @@ healthy controls.
 #### Figure S4
 
 ![](analysis_PM_vmPFC_files/figure-html/lesion-SO-allp-plot-1.png)<!-- -->
-**Figure S4. Damage to medial vmPFC regions decreases willingness to exert effort for others and increases willingness to obtain self-benefitting rewards.** To further interpret the voxel-based lesion symptom mapping (VLSM) finding of decreased prosociality with damage to portions of vmPFC on the medial wall (area 14m and 32), we plotted each recipient separately to examine how damage affects **(a)** choices for other **(b)** choices for self **(c)** discounting *Κ* parameters for other and **(d)** discounting <i>Κ</i> parameters for self. We categorised participants by whether they had damage or not in the areas identified in the VLSM analysis for each effect (choices and <i>Κ</i>; see Figure 6A). These plots suggest that decreased prosociality shown by the recipient effects (other vs. self) in the VLSM are driven by both lower willingness to help the other person and higher willingness to work for oneself in patients with damage to these regions.
+**Figure S4. Damage to medial vmPFC regions decreases willingness to exert effort for others and increases willingness to obtain self-benefitting rewards.** To further interpret the voxel-based lesion symptom mapping (VLSM) finding of decreased prosociality with damage to portions of vmPFC on the medial wall (areas 14 and 25), we plotted each recipient separately to examine how damage affects **(a)** choices for other **(b)** choices for self **(c)** discounting *Κ* parameters for other and **(d)** discounting <i>Κ</i> parameters for self. We categorised participants by whether they had damage or not in the areas identified in the VLSM analysis for each effect (choices and <i>Κ</i>; see Figure 6A). These plots suggest that decreased prosociality shown by the recipient effects (other vs. self) in the VLSM are driven by both lower willingness to help the other person and higher willingness to work for oneself in patients with damage to these regions.
 
 #### Figure S5
 
 ![](analysis_PM_vmPFC_files/figure-html/lesion-SO-vmpfc-plot-1.png)<!-- -->
-**Figure S5. Damage to lateral vmPFC increases willingness to help others and decreases willingness to exert effort for oneself.** Our voxel-based lesion symptom mapping (VLSM) analysis identified a lateral portion of vmPFC in area 13a/b where damage was paradoxically associated with increased prosociality. To further interpret this finding, we extracted the extent of damage for each participant in the region identified in the VLSM analysis of the recipient effect (other vs. self) on *Κ* parameter. The corresponding effect on choices was associated with a smaller, overlapping region of area 13a/b (see Figure 7). Plotting damage in this region against **(a)** discounting *Κ* parameter for other and **(b)** discounting *Κ* parameter for self separately shows the increase in relative prosociality is driven by both lower discounting (higher willingness to work) for other and higher discounting (lower willingness to work) to some extent for self.
+**Figure S5. Damage to lateral vmPFC increases willingness to help others and decreases willingness to exert effort for oneself.** Our voxel-based lesion symptom mapping (VLSM) analysis identified a lateral portion of vmPFC in area 13 where damage was paradoxically associated with increased prosociality. To further interpret this finding, we extracted the extent of damage for each participant in the region identified in the VLSM analysis of the recipient effect (other vs. self) on *Κ* parameter. The corresponding effect on choices was associated with a smaller, overlapping region of area 13 (see Figure 7). Plotting damage in this region against **(a)** discounting *Κ* parameter for other and **(b)** discounting *Κ* parameter for self separately shows the increase in relative prosociality is driven by both lower discounting (higher willingness to work) for other and higher discounting (lower willingness to work) to some extent for self.
 
 #### Table S0 (new S1)
 
@@ -977,7 +977,6 @@ healthy controls.
    <th style="text-align:left;"> contrast </th>
    <th style="text-align:center;"> ratio </th>
    <th style="text-align:center;"> SE </th>
-   <th style="text-align:center;"> null </th>
    <th style="text-align:center;"> z.ratio </th>
    <th style="text-align:center;"> p.value </th>
   </tr>
@@ -988,7 +987,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / self HC </td>
    <td style="text-align:center;"> 0.95 </td>
    <td style="text-align:center;"> 0.09 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -0.54 </td>
    <td style="text-align:center;"> 0.59 </td>
   </tr>
@@ -997,7 +995,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / self LC </td>
    <td style="text-align:center;"> 1.00 </td>
    <td style="text-align:center;"> 0.13 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.02 </td>
    <td style="text-align:center;"> 0.99 </td>
   </tr>
@@ -1006,7 +1003,6 @@ healthy controls.
    <td style="text-align:left;"> self HC / self LC </td>
    <td style="text-align:center;"> 1.06 </td>
    <td style="text-align:center;"> 0.13 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.47 </td>
    <td style="text-align:center;"> 0.64 </td>
   </tr>
@@ -1015,7 +1011,6 @@ healthy controls.
    <td style="text-align:left;"> other vmPFC / other HC </td>
    <td style="text-align:center;"> 0.73 </td>
    <td style="text-align:center;"> 0.07 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -3.13 </td>
    <td style="text-align:center;"> 0.002 </td>
   </tr>
@@ -1024,7 +1019,6 @@ healthy controls.
    <td style="text-align:left;"> other vmPFC / other LC </td>
    <td style="text-align:center;"> 0.76 </td>
    <td style="text-align:center;"> 0.10 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -2.18 </td>
    <td style="text-align:center;"> 0.030 </td>
   </tr>
@@ -1033,7 +1027,6 @@ healthy controls.
    <td style="text-align:left;"> other HC / other LC </td>
    <td style="text-align:center;"> 1.04 </td>
    <td style="text-align:center;"> 0.12 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.31 </td>
    <td style="text-align:center;"> 0.75 </td>
   </tr>
@@ -1042,7 +1035,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / other vmPFC </td>
    <td style="text-align:center;"> 1.56 </td>
    <td style="text-align:center;"> 0.11 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 6.59 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1051,7 +1043,6 @@ healthy controls.
    <td style="text-align:left;"> self HC / other HC </td>
    <td style="text-align:center;"> 1.20 </td>
    <td style="text-align:center;"> 0.06 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 3.49 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1060,7 +1051,6 @@ healthy controls.
    <td style="text-align:left;"> self LC / other LC </td>
    <td style="text-align:center;"> 1.18 </td>
    <td style="text-align:center;"> 0.10 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 1.95 </td>
    <td style="text-align:center;"> 0.052 </td>
   </tr>
@@ -1069,7 +1059,6 @@ healthy controls.
    <td style="text-align:left;"> (self / other vmPFC) / (self / other HC) </td>
    <td style="text-align:center;"> 1.30 </td>
    <td style="text-align:center;"> 0.11 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 3.07 </td>
    <td style="text-align:center;"> 0.002 </td>
   </tr>
@@ -1078,7 +1067,6 @@ healthy controls.
    <td style="text-align:left;"> (self / other vmPFC) / (self / other LC) </td>
    <td style="text-align:center;"> 1.32 </td>
    <td style="text-align:center;"> 0.14 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 2.60 </td>
    <td style="text-align:center;"> 0.009 </td>
   </tr>
@@ -1087,7 +1075,6 @@ healthy controls.
    <td style="text-align:left;"> (self / other HC) / (self / other LC) </td>
    <td style="text-align:center;"> 1.02 </td>
    <td style="text-align:center;"> 0.10 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.19 </td>
    <td style="text-align:center;"> 0.85 </td>
   </tr>
@@ -1231,7 +1218,6 @@ healthy controls.
    <th style="text-align:left;"> contrast </th>
    <th style="text-align:center;"> odds.ratio </th>
    <th style="text-align:center;"> SE </th>
-   <th style="text-align:center;"> null </th>
    <th style="text-align:center;"> z.ratio </th>
    <th style="text-align:center;"> p.value </th>
   </tr>
@@ -1242,7 +1228,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / self HC </td>
    <td style="text-align:center;"> 0.91 </td>
    <td style="text-align:center;"> 0.51 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -0.17 </td>
    <td style="text-align:center;"> 0.87 </td>
   </tr>
@@ -1251,7 +1236,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / self LC </td>
    <td style="text-align:center;"> 1.01 </td>
    <td style="text-align:center;"> 0.72 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.01 </td>
    <td style="text-align:center;"> 0.99 </td>
   </tr>
@@ -1260,7 +1244,6 @@ healthy controls.
    <td style="text-align:left;"> self HC / self LC </td>
    <td style="text-align:center;"> 1.11 </td>
    <td style="text-align:center;"> 0.73 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.16 </td>
    <td style="text-align:center;"> 0.88 </td>
   </tr>
@@ -1269,7 +1252,6 @@ healthy controls.
    <td style="text-align:left;"> other vmPFC / other HC </td>
    <td style="text-align:center;"> 0.33 </td>
    <td style="text-align:center;"> 0.17 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -2.11 </td>
    <td style="text-align:center;"> 0.034 </td>
   </tr>
@@ -1278,7 +1260,6 @@ healthy controls.
    <td style="text-align:left;"> other vmPFC / other LC </td>
    <td style="text-align:center;"> 0.23 </td>
    <td style="text-align:center;"> 0.15 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -2.19 </td>
    <td style="text-align:center;"> 0.029 </td>
   </tr>
@@ -1287,7 +1268,6 @@ healthy controls.
    <td style="text-align:left;"> other HC / other LC </td>
    <td style="text-align:center;"> 0.70 </td>
    <td style="text-align:center;"> 0.43 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -0.58 </td>
    <td style="text-align:center;"> 0.56 </td>
   </tr>
@@ -1296,7 +1276,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / other vmPFC </td>
    <td style="text-align:center;"> 32.82 </td>
    <td style="text-align:center;"> 14.00 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 8.18 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1305,7 +1284,6 @@ healthy controls.
    <td style="text-align:left;"> self HC / other HC </td>
    <td style="text-align:center;"> 11.79 </td>
    <td style="text-align:center;"> 4.30 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 6.77 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1314,34 +1292,30 @@ healthy controls.
    <td style="text-align:left;"> self LC / other LC </td>
    <td style="text-align:center;"> 7.41 </td>
    <td style="text-align:center;"> 3.72 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 3.99 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Recipient*group interaction </td>
-   <td style="text-align:left;"> (self / other vmPFC) / (self / other HC) </td>
-   <td style="text-align:center;"> 2.78 </td>
-   <td style="text-align:center;"> 1.28 </td>
-   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:left;"> (self - other vmPFC) - (self - other HC) </td>
+   <td style="text-align:center;"> NA </td>
+   <td style="text-align:center;"> 0.46 </td>
    <td style="text-align:center;"> 2.22 </td>
    <td style="text-align:center;"> 0.026 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Recipient*group interaction </td>
-   <td style="text-align:left;"> (self / other vmPFC) / (self / other LC) </td>
-   <td style="text-align:center;"> 4.43 </td>
-   <td style="text-align:center;"> 2.57 </td>
-   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:left;"> (self - other vmPFC) - (self - other LC) </td>
+   <td style="text-align:center;"> NA </td>
+   <td style="text-align:center;"> 0.58 </td>
    <td style="text-align:center;"> 2.57 </td>
    <td style="text-align:center;"> 0.010 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Recipient*group interaction </td>
-   <td style="text-align:left;"> (self / other HC) / (self / other LC) </td>
-   <td style="text-align:center;"> 1.59 </td>
-   <td style="text-align:center;"> 0.85 </td>
-   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:left;"> (self - other HC) - (self - other LC) </td>
+   <td style="text-align:center;"> NA </td>
+   <td style="text-align:center;"> 0.53 </td>
    <td style="text-align:center;"> 0.87 </td>
    <td style="text-align:center;"> 0.38 </td>
   </tr>
@@ -1350,7 +1324,6 @@ healthy controls.
    <td style="text-align:left;"> vmPFC - HC </td>
    <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 0.23 </td>
-   <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 3.57 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1359,7 +1332,6 @@ healthy controls.
    <td style="text-align:left;"> vmPFC - LC </td>
    <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 0.29 </td>
-   <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 1.11 </td>
    <td style="text-align:center;"> 0.27 </td>
   </tr>
@@ -1368,7 +1340,6 @@ healthy controls.
    <td style="text-align:left;"> HC - LC </td>
    <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 0.27 </td>
-   <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> -1.87 </td>
    <td style="text-align:center;"> 0.061 </td>
   </tr>
@@ -1377,7 +1348,6 @@ healthy controls.
    <td style="text-align:left;"> self - other </td>
    <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 0.16 </td>
-   <td style="text-align:center;"> NA </td>
    <td style="text-align:center;"> 6.56 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1467,7 +1437,6 @@ healthy controls.
    <th style="text-align:left;"> contrast </th>
    <th style="text-align:center;"> ratio </th>
    <th style="text-align:center;"> SE </th>
-   <th style="text-align:center;"> null </th>
    <th style="text-align:center;"> z.ratio </th>
    <th style="text-align:center;"> p.value </th>
   </tr>
@@ -1478,7 +1447,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / self HC </td>
    <td style="text-align:center;"> 0.88 </td>
    <td style="text-align:center;"> 0.23 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -0.50 </td>
    <td style="text-align:center;"> 0.62 </td>
   </tr>
@@ -1487,7 +1455,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / self LC </td>
    <td style="text-align:center;"> 1.02 </td>
    <td style="text-align:center;"> 0.34 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.07 </td>
    <td style="text-align:center;"> 0.94 </td>
   </tr>
@@ -1496,7 +1463,6 @@ healthy controls.
    <td style="text-align:left;"> self HC / self LC </td>
    <td style="text-align:center;"> 1.17 </td>
    <td style="text-align:center;"> 0.36 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.50 </td>
    <td style="text-align:center;"> 0.62 </td>
   </tr>
@@ -1505,7 +1471,6 @@ healthy controls.
    <td style="text-align:left;"> other vmPFC / other HC </td>
    <td style="text-align:center;"> 1.62 </td>
    <td style="text-align:center;"> 0.43 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 1.83 </td>
    <td style="text-align:center;"> 0.067 </td>
   </tr>
@@ -1514,7 +1479,6 @@ healthy controls.
    <td style="text-align:left;"> other vmPFC / other LC </td>
    <td style="text-align:center;"> 2.18 </td>
    <td style="text-align:center;"> 0.73 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 2.31 </td>
    <td style="text-align:center;"> 0.021 </td>
   </tr>
@@ -1523,7 +1487,6 @@ healthy controls.
    <td style="text-align:left;"> other HC / other LC </td>
    <td style="text-align:center;"> 1.34 </td>
    <td style="text-align:center;"> 0.42 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> 0.95 </td>
    <td style="text-align:center;"> 0.34 </td>
   </tr>
@@ -1532,7 +1495,6 @@ healthy controls.
    <td style="text-align:left;"> self vmPFC / other vmPFC </td>
    <td style="text-align:center;"> 0.30 </td>
    <td style="text-align:center;"> 0.05 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -7.71 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1541,7 +1503,6 @@ healthy controls.
    <td style="text-align:left;"> self HC / other HC </td>
    <td style="text-align:center;"> 0.55 </td>
    <td style="text-align:center;"> 0.06 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -5.37 </td>
    <td style="text-align:center;"> &lt;0.001 </td>
   </tr>
@@ -1550,7 +1511,6 @@ healthy controls.
    <td style="text-align:left;"> self LC / other LC </td>
    <td style="text-align:center;"> 0.63 </td>
    <td style="text-align:center;"> 0.11 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -2.57 </td>
    <td style="text-align:center;"> 0.010 </td>
   </tr>
@@ -1559,7 +1519,6 @@ healthy controls.
    <td style="text-align:left;"> (self / other vmPFC) / (self / other HC) </td>
    <td style="text-align:center;"> 0.54 </td>
    <td style="text-align:center;"> 0.10 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -3.17 </td>
    <td style="text-align:center;"> 0.002 </td>
   </tr>
@@ -1568,7 +1527,6 @@ healthy controls.
    <td style="text-align:left;"> (self / other vmPFC) / (self / other LC) </td>
    <td style="text-align:center;"> 0.47 </td>
    <td style="text-align:center;"> 0.11 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -3.13 </td>
    <td style="text-align:center;"> 0.002 </td>
   </tr>
@@ -1577,7 +1535,6 @@ healthy controls.
    <td style="text-align:left;"> (self / other HC) / (self / other LC) </td>
    <td style="text-align:center;"> 0.87 </td>
    <td style="text-align:center;"> 0.19 </td>
-   <td style="text-align:center;"> 1 </td>
    <td style="text-align:center;"> -0.65 </td>
    <td style="text-align:center;"> 0.52 </td>
   </tr>
