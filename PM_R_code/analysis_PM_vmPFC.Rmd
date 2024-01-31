@@ -117,7 +117,8 @@ pvalrf <- function(pvals, sig.limit = .001, digits = 3, html = FALSE) {
 
 # 1 to save, 0 to not save
 saveplots <- 0
-path <- 'plots'
+savefullplots <- 0
+path <- 'plots/'
 savecsvs <- 0
 
 # settings used throughout script to make figures the same height and text size
@@ -314,9 +315,9 @@ df.2kl <- df.2kl.full %>%
 
 ```
 
-```{r demographics, echo = FALSE, cache = TRUE, warning=FALSE, message=FALSE}
+## Demographics
 
-# Demographics
+```{r demographics, echo = FALSE, cache = TRUE, warning=FALSE, message=FALSE}
 
 demographics.ol <- df.2k.full %>%
   dplyr::select(contains("Group", ignore.case = F), matches("Age", ignore.case = F), matches("Gender", ignore.case = F), matches(c("Qualification", "AMI_tot")), contains(c("BDI_total", "seconds"))) %>% 
@@ -529,9 +530,7 @@ credit.sig[3,] <- c(hc.self.x, vmpfc.self.x, lc.self.x, hc.x, vmpfc.x, hc.x)
 credit.sig[4,] <- c(hc.other.x, vmpfc.other.x, lc.other.x, vmpfc.x, lc.x, lc.x)
 credit.sig[5,] <- c(0, 0, 0, 0.02, 0.02, 0.02)
 
-graphname <- paste0(path,'/Total_credits_earned.tiff')  
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
+graphname <- paste0(path,'Total_credits_earned.tiff')  
 
 pd <- position_jitter(height = 0, width = 0.2, seed = 123)
 
@@ -554,7 +553,7 @@ credit.plt <- ggplot(credits, aes(x=Condition2, y=total_credits, fill = Recipien
         legend.box.spacing = unit(0, "pt"),
         legend.title = element_blank(),
         axis.text=element_text(size = axtext), 
-        axis.text.x=element_text(size = axtext, hjust = 1),
+        axis.text.x=element_text(size = axtext, hjust = 0.8),
         axis.title.y=element_markdown(size = axtitle),
         legend.text=element_text(size = axtitle))
 
@@ -588,13 +587,17 @@ credit.lab <- plot_grid(credit.lab, NA, nrow = 2, rel_heights = c(1,0.1))
 
 credit.plt <- plot_grid(credit.lab, credit.plt, ncol = 2, rel_widths = c(0.15,1))
 
-if (saveplots == 1) {
-  credit.plt
+
+if (saveplots == 1) 
+{tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+  print(credit.plt)
   dev.off()}
 
 ```
 
 ## Analyse choice data
+
+### Models of choices
 
 ```{r choice-models, eval=FALSE, echo=FALSE}
 
@@ -746,27 +749,27 @@ if (choice.con.ag$p.value[choice.con.ag$contrast == "self LC / other LC"] < .05)
 i <- i + 1
 
 # comparing self - other difference between groups [see below if error here]
-# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] < .05) { choice.sig[1,i] <- "*"
-# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] >= .05) { choice.sig[1,i] <- NA }
-# i <- i + 1
-# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] < .05) { choice.sig[1,5] <- "*"
-# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
-# i <- i + 1
-# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] < 0.05) { choice.sig[1,i] <- "*"
-# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
-# i <- i + 1
+if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] < .05) { choice.sig[1,i] <- "*"
+} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other HC)"] >= .05) { choice.sig[1,i] <- NA }
+i <- i + 1
+if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] < .05) { choice.sig[1,5] <- "*"
+} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other vmPFC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
+i <- i + 1
+if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] < 0.05) { choice.sig[1,i] <- "*"
+} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self / other HC) / (self / other LC)"] >= .05) { choice.sig[1,i] <- NA }
+i <- i + 1
 
 ## depending on package versions notation may use "-" instead of "/" in section above
 # comparing self - other difference between groups
-if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] < .05) { choice.sig[1,i] <- "*"
-} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] >= .05) { choice.sig[1,i] <- NA }
-i <- i + 1
-if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] < .05) { choice.sig[1,5] <- "*"
-} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
-i <- i + 1
-if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] < 0.05) { choice.sig[1,i] <- "*"
-} else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
-i <- i + 1
+# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] < .05) { choice.sig[1,i] <- "*"
+# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other HC)"] >= .05) { choice.sig[1,i] <- NA }
+# i <- i + 1
+# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] < .05) { choice.sig[1,5] <- "*"
+# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other vmPFC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
+# i <- i + 1
+# if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] < 0.05) { choice.sig[1,i] <- "*"
+# } else if (choice.con.inter.ag$p.value[choice.con.inter.ag$contrast == "(self - other HC) - (self - other LC)"] >= .05) { choice.sig[1,i] <- NA }
+# i <- i + 1
 
 colnames(choice.sig) <- sig.order
 
@@ -828,9 +831,7 @@ choice.sig[3,] <- c(hc.self.x, vmpfc.self.x, lc.self.x, hc.x, vmpfc.x, hc.x)
 choice.sig[4,] <- c(hc.other.x, vmpfc.other.x, lc.other.x, vmpfc.x, lc.x, lc.x)
 choice.sig[5,] <- c(0, 0, 0, 0.02, 0.02, 0.02)
 
-graphname <- paste0(path,'/Total_accept.tiff')  
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
+graphname <- paste0(path,'Total_accept.tiff')  
 
 choice.plt <- ggplot(choices, aes(x=Condition2, y=prop_accept, fill = Recipient, color = Recipient, alpha = Condition, size = Condition)) +
   stat_summary(fun = mean, geom = "bar", position=position_dodge(0.75), width = 0.75, alpha = 1, color = 'black') +
@@ -851,7 +852,7 @@ choice.plt <- ggplot(choices, aes(x=Condition2, y=prop_accept, fill = Recipient,
         legend.box.spacing = unit(0, "pt"),
         legend.title = element_blank(),
         axis.text=element_text(size = axtext), 
-        axis.text.x=element_text(size = axtext),
+        axis.text.x=element_text(size = axtext, hjust = 0.8),
         axis.title.y=element_markdown(size = axtitle),
         legend.text=element_text(size = axtitle))
 
@@ -884,8 +885,9 @@ choice.lab.high <- plot_grid(choice.lab, NA, nrow = 2, rel_heights = c(1,0.1))
 
 choice.plt <- plot_grid(choice.lab.high, choice.plt, ncol = 2, rel_widths = c(0.15,1))
 
-if (saveplots == 1) {
-  choice.plt
+if (saveplots == 1) 
+{tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+  print(choice.plt)
   dev.off()}
 
 ```
@@ -899,9 +901,7 @@ choices.r <-
   dplyr::group_by(PM_ID, Group, Reward.r)        %>%
   dplyr::summarise(prop_accept = mean(as.numeric(Choice)-1), .groups = "drop")
 
-graphname <- paste0('plots/Reward_accept.tiff')  
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
+graphname <- paste0(path,'Reward_accept.tiff')  
 
 choice.r.plt <- ggplot(df, aes(x=Reward.r, y=Choice.r, group = Group, colour = Group, fill = Group, linetype = Group)) +
   stat_smooth(alpha = 0.3, size = 1, formula = y ~ x, method = "glm", method.args = list(family="binomial")) +
@@ -928,9 +928,10 @@ choice.r.plt <- ggplot(df, aes(x=Reward.r, y=Choice.r, group = Group, colour = G
 
 choice.r.plt <- plot_grid(choice.lab.high, choice.r.plt, ncol = 2, rel_widths = c(0.15,1))
 
-# choice.r.plt
-
-if (saveplots == 1) {dev.off()}
+if (saveplots == 1) 
+{tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+  print(choice.r.plt)
+  dev.off()}
 
 ### Group * effort interaction (across agents)
 
@@ -939,9 +940,7 @@ choices.e <-
   dplyr::group_by(PM_ID, Group, Effort.raw)        %>%
   dplyr::summarise(prop_accept = mean(as.numeric(Choice)-1), .groups = "drop")
 
-graphname <- paste0(path,'/Effort_accept.tiff')
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
+graphname <- paste0(path,'Effort_accept.tiff')
 
 choice.e.plt <- ggplot(df, aes(x=Effort.raw, y=Choice.r, group = Group, colour = Group, fill = Group, linetype = Group)) +
   stat_smooth(alpha = 0.3, size = 1, formula = y ~ x, method = "glm", method.args = list(family="binomial")) +
@@ -971,9 +970,10 @@ choice.e.plt <- ggplot(df, aes(x=Effort.raw, y=Choice.r, group = Group, colour =
 
 choice.e.plt <- plot_grid(choice.lab.high, choice.e.plt, ncol = 2, rel_widths = c(0.15,1))
 
-# choice.e.plt
-
-if (saveplots == 1) {dev.off()}
+if (saveplots == 1) 
+{tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+  print(choice.e.plt)
+  dev.off()}
 
 ```
 
@@ -984,6 +984,8 @@ if (saveplots == 1) {dev.off()}
 ```{r model-comp-plot, echo = FALSE, warning=FALSE}
 
 d.rel.bic <- read.csv('data/PM_model_fit_statistics_all.csv')
+
+graphname <- paste0(path,'BIC_model_comp.tiff')  
 
 plot.bic <- ggplot(d.rel.bic, aes(x = as.factor(model), y = bicint, fill = choiceProbMedianR2)) + 
   geom_bar(stat = "identity", size = 0.3, colour = 'black',
@@ -1037,12 +1039,9 @@ bic.lab <- ggplot() +
 bic.lab <- plot_grid(bic.lab, NA, nrow = 2, rel_heights = c(1,0.1))
 bic.leg <- plot_grid(NA, bic.leg, NA, nrow = 3, rel_heights = c(0.3,0.3,0.3))
 
-graphname <- paste0(path,'/BIC_model_comp.tiff')  
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH*0.75, res = resolution)
-  
+if (saveplots == 1) 
+  {tiff(graphname, units="in", width = plotW*2, height = plotH*0.75, res = resolution)
   print(bic.plt)
-  
   dev.off()}
 
 ```
@@ -1063,6 +1062,8 @@ df.mi <- df.mi %>%
   mutate(Simulated = factor(Simulated)) %>% 
   mutate(Estimated = factor(Estimated))
 
+graphname <- paste0(path,'Model_iden_xp.tiff')  
+
 xp.plot <- ggplot(data = df.mi, aes(x=Simulated, y=Estimated, fill=xp)) +
   geom_tile() +
   scale_fill_distiller(palette = "PuBu", direction = 1,
@@ -1081,11 +1082,11 @@ xp.plot <- ggplot(data = df.mi, aes(x=Simulated, y=Estimated, fill=xp)) +
         legend.title = element_text(size = axtitle, angle = 90),
         legend.text = element_text(size = axtext))
 
-if (saveplots == 1) {tiff("plots/Model_iden_xp.tiff", units="in", res = resolution, width = modplotW, height = plotH)
-  
-  xp.plot
-  
+if (saveplots == 1) {tiff(graphname, units="in", res = resolution, width = modplotW, height = plotH)
+  print(xp.plot)
   dev.off()}
+
+graphname <- paste0(path,'Model_iden_best.tiff')  
 
 bm.plot <- ggplot(data = df.mi, aes(x=Simulated, y=Estimated, fill=best)) +
   geom_tile() +
@@ -1105,10 +1106,8 @@ bm.plot <- ggplot(data = df.mi, aes(x=Simulated, y=Estimated, fill=best)) +
         legend.title = element_text(size = axtitle, angle = 90),
         legend.text = element_text(size = axtext))
 
-if (saveplots == 1) {tiff("plots/Model_iden_best.tiff", units="in", res = resolution, width = modplotW, height = plotH)
-  
+if (saveplots == 1) {tiff(graphname, units="in", res = resolution, width = modplotW, height = plotH)
   bm.plot
-  
   dev.off()}
 
 ## Parameter recovery
@@ -1119,6 +1118,8 @@ df.pr$diag <- df.pr$Simulated == df.pr$Recovered
 df.pr$diag[!df.pr$diag] <- NA
 
 pal <- c("#F6E8C3", "#F5F5F5", "#C7EAE5", "#80CDC1", "#35978F", "#01665E", "#003C30") # create colour palette
+
+graphname <- paste0(path,'Parameter_recovery.tiff')  
 
 ml.plot <- ggplot(data = df.pr, aes(x=Simulated, y=Recovered, fill=HCorr)) + 
   geom_tile() +
@@ -1146,10 +1147,8 @@ ml.plot <- ggplot(data = df.pr, aes(x=Simulated, y=Recovered, fill=HCorr)) +
         legend.title = element_text(size = axtitle), 
         legend.text = element_text(size = axtext))
 
-if (saveplots == 1) {tiff("plots/Parameter_recovery.tiff", units="in", res = resolution, width = plotW*2, height = plotH*0.75)
-  
-  ml.plot
-  
+if (saveplots == 1) {tiff(graphname, units="in", res = resolution, width = plotW*2, height = plotH*0.75)
+  print(ml.plot)
   dev.off()}
 
 ```
@@ -1163,9 +1162,8 @@ df.ksim <- df.ksim %>%
 
 ### Effort effect for different k values
 
-graphname <- paste0(path,'/k_stimulations.tiff')
+graphname <- paste0(path,'k_stimulations.tiff')
 
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
 
 k.sim.plt <- ggplot(df.ksim, aes(x=effort, y=sv, group = Group, colour = k, fill = k)) +
   geom_line(size = 1, formula = y~x) +
@@ -1181,7 +1179,9 @@ k.sim.plt <- ggplot(df.ksim, aes(x=effort, y=sv, group = Group, colour = k, fill
 
 # k.sim.plt
 
-if (saveplots == 1) {dev.off()}
+if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+ print(k.sim.plt)
+ dev.off()}
 
 k.sim.plt.lin <- ggplot(df.ksim, aes(x=effort, y=sv_lin, group = Group, colour = k, fill = k)) +
   geom_line(size = 1, formula = y~x) +
@@ -1402,12 +1402,10 @@ k.lab <- ggplot() +
 
 k.lab.high <- plot_grid(k.lab, NA, nrow = 2, rel_heights = c(1,0.1))
 
-graphname <- paste0(path,'/K.tiff')  
+graphname <- paste0(path,'K.tiff')  
 
 if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
-  
   print(k.plt)
-  
   dev.off()}
 
 ```
@@ -1581,17 +1579,15 @@ b.lab <- plot_grid(b.lab, NA, nrow = 2, rel_heights = c(1,0.1))
 
 b.plt <- plot_grid(b.lab, b.plt, ncol = 2, rel_widths = c(0.15,1))
 
-graphname <- paste0(path,'/beta.tiff')  
+graphname <- paste0(path,'beta.tiff')  
 
 if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
-  
-  print(b.plt)}
-
-if (saveplots == 1) {dev.off()}
+  print(b.plt)
+  dev.off()}
 
 ```
 
-## Analyse force data
+## Analyse success rates
 
 ```{r success-comparisons, echo=FALSE}
 
@@ -1670,7 +1666,9 @@ success.con.all <- bind_rows(success.con.ag1, success.con.ag2, success.con.ag3) 
 
 ```
 
-### LLM of force data
+## Analyse force data
+
+### Models of force data
 
 ```{r eval=FALSE, echo=FALSE}
 
@@ -1872,9 +1870,7 @@ force.sig <- data.frame(Effort.f = c(5.4,5.1,5.4), mean_force = c(0.88, 0.85, 0.
 force.sig2 <- data.frame(Effort.f = c(1:5), mean_force = c(1,1,1,0.93,1,1,1,0.86,1,1), label = c("", "", "", "*", "", "", "", "*", "", "*"),
                         Group = factor(group.lims[1:2], levels = group.lims[1:2]), Recipient = factor(c(rep(agent.lims[1],5), rep(agent.lims[2],5))))
 
-graphname <- paste0('plots/Effort_force.tiff')
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
+graphname <- paste0(path,'Effort_force.tiff')
 
 force.e.plt <- ggplot(force.e, aes(x = Effort.f, y = mean_force, group = Recipient, color = Recipient, fill = Recipient, linetype = Recipient)) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.5, jitter.height = 0, jitter.width = 0.2), size = 2, alpha = 0.2, show.legend = F) +
@@ -1901,15 +1897,13 @@ force.e.plt <- ggplot(force.e, aes(x = Effort.f, y = mean_force, group = Recipie
   scale_size_manual(values = c(5,7,5), guide = 'none') +
   facet_grid(cols = vars(Group), labeller = labeller(Group = group.labs.leg.lab)) 
   
-if (saveplots == 1) {
-  force.e.plt
+if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+  print(force.e.plt)
   dev.off()}
 
 ### plot the force data across effort and reward levels
 
-graphname <- paste0('plots/Effort_reward_agent_force.tiff')
-
-if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)}
+graphname <- paste0(path,'Effort_reward_agent_force.tiff')
 
 force.base.plt <- ggplot(data.pmfor.glmm, aes(x=Effort.f, y=force_norm, group = Recipient, color = Recipient, fill = Recipient, linetype = Recipient)) +
   geom_smooth(method = 'lm', alpha = 0.5, size = 0.4, formula = y ~ x, show.legend = FALSE) + 
@@ -1931,8 +1925,8 @@ force.base.plt <- ggplot(data.pmfor.glmm, aes(x=Effort.f, y=force_norm, group = 
 force.er.plt <- force.base.plt +
   facet_grid(cols = vars(Group), rows = vars(Reward.f), labeller = labeller(Group = group.labs.leg.lab, Reward.f = reward.labs))
 
-if (saveplots == 1) {
-  force.er.plt
+if (saveplots == 1) {tiff(graphname, units="in", width = plotW*2, height = plotH, res = resolution)
+  print(force.er.plt)
   dev.off()}
 
 ```
@@ -1966,31 +1960,74 @@ choice.ranef <- ranef(m.choice.all)[["PM_ID"]]
 choice.ranids <- levels(m.choice.all@frame[["PM_ID"]])
 choice.ranef$PM_ID <- choice.ranids
 colnames(choice.ranef) <- paste(colnames(choice.ranef), "choice", sep = "_")
-choice.ranef$PM_ID_choice[choice.ranef$PM_ID == 507] <- 270
+choice.ranef$PM_ID_choice[choice.ranef$PM_ID == 507] <- 270 # one ID mislabelled
 
 df.map.wide <- left_join(k.ranef %>% select(!contains("Intercept")) %>% rename(PM_ID = "PM_ID_k"), 
-                         df.2k.full %>% select(!contains(c("DB", "-"))) %>% select("ID", "Group_vmpfc", contains(c("choice", "_k"))) %>% rename(PM_ID = ID), by = "PM_ID")
+                         df.2k.full %>% select(!contains(c("DB", "-"))) %>% select("ID", "Group_vmpfc", contains(c("_k", "_choice"))) %>% rename(PM_ID = ID), by = "PM_ID")
 
 df.map.wide <- left_join(df.map.wide, df.map %>% select(!"ID"), by = "PM_ID")
 df.map.wide$lesion[is.na(df.map.wide$lesion)] <- 0
 
 df.map.wide <- left_join(df.map.wide, choice.ranef %>% select(!contains("Intercept")) %>% rename(PM_ID = "PM_ID_choice"), by = "PM_ID")
 
-if (savecsvs == 1) {write.csv(df.map.wide, "data/behavioural_parameters_all.csv", row.names = F, na = "")}
+df.map.all <- df.map.wide %>% subset(Group_vmpfc != "HC") 
+df.map.all <- df.map.all %>% 
+  mutate(lv = scale(df.map.all$lesion)) %>% 
+  mutate(rank_recipient_k_pos = scale(rank(df.map.all$Recipient_s2z1_k))) %>% 
+  mutate(rank_recipient_k_neg = rank_recipient_k_pos * -1) %>% 
+  mutate(rank_recipient_choice_pos = scale(rank(df.map.all$Recipient_s2z1_choice))) %>% 
+  mutate(rank_recipient_choice_neg = rank_recipient_choice_pos * -1) %>% 
+  mutate(rank_effort_pos = scale(rank(df.map.all$Effort_choice))) %>% 
+  mutate(rank_effort_neg = rank_effort_pos * -1) %>% 
+  mutate(rank_reward_pos = scale(rank(df.map.all$Reward_choice))) %>% 
+  mutate(rank_reward_neg = rank_reward_pos * -1)
+
+df.map.vmpfc <- df.map.wide %>% subset(Group_vmpfc == "vmPFC")
+df.map.vmpfc <- df.map.vmpfc %>%
+  mutate(lv = scale(df.map.vmpfc$lesion)) %>% 
+  mutate(rank_recipient_k_pos = scale(rank(df.map.vmpfc$Recipient_s2z1_k))) %>% 
+  mutate(rank_recipient_k_neg = rank_recipient_k_pos * -1) %>% 
+  mutate(rank_recipient_choice_pos = scale(rank(df.map.vmpfc$Recipient_s2z1_choice))) %>% 
+  mutate(rank_recipient_choice_neg = rank_recipient_choice_pos * -1) %>% 
+  mutate(rank_effort_pos = scale(rank(df.map.vmpfc$Effort_choice))) %>% 
+  mutate(rank_effort_neg = rank_effort_pos * -1) %>% 
+  mutate(rank_reward_pos = scale(rank(df.map.vmpfc$Reward_choice))) %>% 
+  mutate(rank_reward_neg = rank_reward_pos * -1)
+
+df.map.all.k <- df.map.all %>% select("lv", starts_with("rank_recipient_k"))
+if (savecsvs == 1) {write.csv(df.map.all.k, "../Lesion_analysis/all_lesion_patients/recip_k/recip_k_ranked.csv", row.names = F, na = "")}
+df.map.all.choice <- df.map.all %>% select("lv", starts_with("rank_recipient_choice"))
+if (savecsvs == 1) {write.csv(df.map.all.choice, "../Lesion_analysis/all_lesion_patients/recip_choice/recip_choice_ranked.csv", row.names = F, na = "")}
+df.map.all.effort <- df.map.all %>% select("lv", starts_with("rank_effort"))
+if (savecsvs == 1) {write.csv(df.map.all.effort, "../Lesion_analysis/all_lesion_patients/effort/effort_ranked.csv", row.names = F, na = "")}
+df.map.all.reward <- df.map.all %>% select("lv", starts_with("rank_reward"))
+if (savecsvs == 1) {write.csv(df.map.all.reward, "../Lesion_analysis/all_lesion_patients/reward/reward_ranked.csv", row.names = F, na = "")}
+
+df.map.vmpfc.k <- df.map.vmpfc %>% select("lv", starts_with("rank_recipient_k"))
+if (savecsvs == 1) {write.csv(df.map.vmpfc.k, "../Lesion_analysis/vmPFC_patients_only/recip_k/recip_k_ranked.csv", row.names = F, na = "")}
+df.map.vmpfc.choice <- df.map.vmpfc %>% select("lv", starts_with("rank_recipient_choice"))
+if (savecsvs == 1) {write.csv(df.map.vmpfc.choice, "../Lesion_analysis/vmPFC_patients_only/recip_choice/recip_choice_ranked.csv", row.names = F, na = "")}
+df.map.vmpfc.effort <- df.map.vmpfc %>% select("lv", starts_with("rank_effort"))
+if (savecsvs == 1) {write.csv(df.map.vmpfc.effort, "../Lesion_analysis/vmPFC_patients_only/effort/effort_ranked.csv", row.names = F, na = "")}
+df.map.vmpfc.reward <- df.map.vmpfc %>% select("lv", starts_with("rank_reward"))
+if (savecsvs == 1) {write.csv(df.map.vmpfc.reward, "../Lesion_analysis/vmPFC_patients_only/reward/reward_ranked.csv", row.names = F, na = "")}
 
 # RUN LESION MAPPING
-# using above csv
+# using above csvs and see Guide_to_lesion_analysis.docx
 # then extract the number of voxels / volume of damage for each patient in the regions identified in lesion mapping
+# and save as csvs to load below
 
 df.k.roi <- read_csv("data/all_patients_Recipient_k_negative.csv", show_col_types = FALSE)
 
 df.k.roi <- df.k.roi %>% 
-  add_column("PM_ID" = factor(df.map$ID), .before = "ID") 
+  mutate("PM_ID" = factor(ID))
+  # add_column("PM_ID" = factor(df.map$ID), .before = "ID") 
 
 df.choice.roi <- read_csv("data/all_patients_Recipient_choice_positive.csv", show_col_types = FALSE)
 
 df.choice.roi <- df.choice.roi %>% 
-  add_column("PM_ID" = factor(df.map$ID), .before = "ID")
+  mutate("PM_ID" = factor(ID))
+  # add_column("PM_ID" = factor(df.map$ID), .before = "ID")
 
 df.map.patients <- left_join(df.map.wide %>% subset(Group_vmpfc != "HC"), 
                              df.k.roi %>% select(!"ID"), by = "PM_ID")
@@ -2008,7 +2045,7 @@ df.map.patients <- df.map.patients %>%
 
 ```
 
-### Plot lesion size correlations (all patients)
+### Plot lesion size correlations
 
 ```{r lesion-sizes-plot, warning=FALSE, message=FALSE, echo = FALSE, fig.height=6, fig.width=8}
 
@@ -2058,7 +2095,7 @@ plot.size.Rk <- ggplot(df.map.patients, aes(x = lesion, y = k_effect_rank)) +
         axis.title.y = element_markdown(size = axtitle)) +
   guides(shape = guide_legend(override.aes = list(size = 6))) +
   annotate(geom='richtext', 
-           x = 6000, y = 40,
+           x = 6000, y = 5,
            label = paste0("_r_","<sub>(", (sum(!is.na(df.map.patients$lesion))-2),")</sub>=", 
                           format(round(cor.size.Rk[["estimate"]][["cor"]],digits=2), nsmall=2),", _p_", 
                           pvalrf(cor.size.Rk[["p.value"]])),
@@ -2118,7 +2155,8 @@ plot.size.Rchoice <- ggplot(df.map.patients, aes(x = lesion, y = reward_effect_r
            label = paste0("_r_","<sub>(", (sum(!is.na(df.map.patients$lesion))-2),")</sub>=", 
                           format(round(cor.size.Rchoice[["estimate"]][["cor"]],digits=2), nsmall=2),", _p_", 
                           pvalrf(cor.size.Rchoice[["p.value"]])),
-           fill = NA, label.color = NA, size = 6)
+           fill = NA, label.color = NA, size = 6) + 
+  theme(legend.position = "bottom")
 
 # print(plot.size.Rchoice)
 
@@ -2278,7 +2316,7 @@ plot.all.kV.Sk <- ggplot(df.map.patients, aes(x = k_vox_bin, y = PM_self_k, fill
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[1], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = agent.fills[1]) +
   scale_x_discrete(name = "Areas 14 & 25", position = "top") +
-  scale_y_continuous(name = paste0("Self *\u039A*"), trans = "reverse") +
+  scale_y_continuous(name = paste0('*\u039A*<sub>self</sub>'), trans = "reverse") +
   scale_color_manual(values = c(agent.colours[1],agent.colours[1])) +
   scale_fill_manual(values = c(agent.fills[1],agent.fills[1])) +
   theme_classic() + 
@@ -2300,7 +2338,7 @@ plot.all.kV.Ok <- ggplot(df.map.patients, aes(x = k_vox_bin, y = PM_other_k, fil
   stat_summary(fun = mean, position=position_dodge(0.75), width = 0.75, color = agent.fills[2], size = 3) +
   geom_jitter(position = position_jitterdodge(dodge.width = 0.75, jitter.height = 0, jitter.width = 0.3), size = 3, show.legend = FALSE, alpha = 0.5, fill = agent.fills[1]) +
   scale_x_discrete(name = "Areas 14 & 25", position = "top") +
-  scale_y_continuous(name = paste0("Other *\u039A*"), trans = "reverse") +
+  scale_y_continuous(name = paste0('*\u039A*<sub>other</sub>'), trans = "reverse") +
   scale_color_manual(values = c(agent.colours[2],agent.colours[2])) +
   scale_fill_manual(values = c(agent.fills[2],agent.fills[2])) +
   theme_classic() + 
@@ -2350,6 +2388,32 @@ kV.lab <- ggplot() +
 
 ```
 
+```{r map-assump-all, warning=FALSE, message=FALSE, echo = FALSE, fig.height=6, fig.width=4, eval=FALSE}
+
+m.all.choice <- lm(Recipient_s2z1_choice ~ choice_vox_bin, data = df.map.patients)
+m.all.choice.rank <- lm(choice_effect_rank ~ choice_vox_bin, data = df.map.patients)
+
+performance::check_normality(m.all.choice)
+performance::check_normality(m.all.choice.rank)
+performance::check_homogeneity(m.all.choice)
+performance::check_homogeneity(m.all.choice.rank)
+
+m.all.choice.check <- performance::check_model(m.all.choice)
+m.all.choice.rank.check <- performance::check_model(m.all.choice.rank)
+
+m.all.k <- lm(Recipient_s2z1_k ~ k_vox_bin, data = df.map.patients)
+m.all.k.rank <- lm(k_effect_rank ~ k_vox_bin, data = df.map.patients)
+
+m.all.k.check <- performance::check_model(m.all.k)
+m.all.k.rank.check <- performance::check_model(m.all.k.rank)
+
+performance::check_normality(m.all.k)
+performance::check_normality(m.all.k.rank)
+performance::check_homogeneity(m.all.k)
+performance::check_homogeneity(m.all.k.rank)
+
+```
+
 ### Plot lesion mapping - vmpfc only
 
 ```{r map-vmpfc-plot, warning=FALSE, message=FALSE, echo = FALSE, fig.height=6, fig.width=4}
@@ -2357,12 +2421,14 @@ kV.lab <- ggplot() +
 df.k.roi <- read_csv("data/vmPFC_only_Recipient_k_positive.csv", show_col_types = FALSE)
 
 df.k.roi <- df.k.roi %>% 
-  add_column("PM_ID" = factor(df.map$ID), .before = "ID") 
+  mutate("PM_ID" = factor(ID))
+  # add_column("PM_ID" = factor(df.map$ID), .before = "ID") 
 
 df.choice.roi <- read_csv("data/vmPFC_only_Recipient_choice_negative.csv", show_col_types = FALSE)
 
-df.choice.roi <- df.choice.roi %>% 
-  add_column("PM_ID" = factor(df.map$ID), .before = "ID")
+df.choice.roi <- df.choice.roi  %>% 
+  mutate("PM_ID" = factor(ID))
+  # add_column("PM_ID" = factor(df.map$ID), .before = "ID") 
 
 df.map.patients <- left_join(df.map.wide %>% subset(Group_vmpfc != "HC"), 
                              df.k.roi %>% select(!"ID"), by = "PM_ID")
@@ -2525,6 +2591,32 @@ plot.vmpfc.kV.Ok <- plot.vmpfc.kV.Ok + theme(legend.position = "none")
 
 ```
 
+```{r map-assump-vmpfc, warning=FALSE, message=FALSE, echo = FALSE, fig.height=6, fig.width=4, eval=FALSE}
+
+m.vmpfc.choice <- lm(Recipient_s2z1_choice ~ choice_vox_bin, data = df.map.patients)
+m.vmpfc.choice.rank <- lm(choice_effect_rank ~ choice_vox_bin, data = df.map.patients)
+
+performance::check_normality(m.vmpfc.choice)
+performance::check_normality(m.vmpfc.choice.rank)
+performance::check_homogeneity(m.vmpfc.choice)
+performance::check_homogeneity(m.vmpfc.choice.rank)
+
+m.vmpfc.choice.check <- performance::check_model(m.vmpfc.choice)
+m.vmpfc.choice.rank.check <- performance::check_model(m.vmpfc.choice.rank)
+
+m.vmpfc.k <- lm(Recipient_s2z1_k ~ k_vox_bin, data = df.map.patients)
+m.vmpfc.k.rank <- lm(k_effect_rank ~ k_vox_bin, data = df.map.patients)
+
+m.vmpfc.k.check <- performance::check_model(m.vmpfc.k)
+m.vmpfc.k.rank.check <- performance::check_model(m.vmpfc.k.rank)
+
+performance::check_normality(m.vmpfc.k)
+performance::check_normality(m.vmpfc.k.rank)
+performance::check_homogeneity(m.vmpfc.k)
+performance::check_homogeneity(m.vmpfc.k.rank)
+
+```
+
 # Manuscript
 
 ## Methods
@@ -2555,7 +2647,8 @@ mean=`r format(dem$Age_mean[rownames(dem) == "HC"], nsmall=2)`;
 `r d.gender[rownames(d.gender) == "HC",1]` females), 
 giving a total sample of 
 n=`r length(demographics$Age)` 
-for group-based analyses. Finally,
+for group-based analyses. No statistical methods were used to pre-determine sample sizes but our 
+sample sizes are larger than those reported in previous publications[REFS]. Finally,
 `r words(length(demographics.ol$Age[demographics.ol$Group == "OL"]))`
 additional patients with lesions affecting more dorsal regions of mPFC
 or the anterior cingulate cortex (ACC) also completed the task (age
@@ -2565,7 +2658,9 @@ mean=`r format(dem$Age_mean[rownames(dem) == "OL"], nsmall=2)`;
 These patients were only included in the lesion mapping analysis (see below), 
 which had a total sample of 45 patients. We did not include patients with dorsal mPFC or 
 ACC lesions in the between-group analyses, as the damage was not within the vmPFC region 
-of interest, but also was not distinct enough to include in the lesion control group.
+of interest, but also was not distinct enough to include in the lesion control group. 
+Results from additional control analyses repeating all the between-group (G)LMMs 
+including these patients in the LC group (n=20) showed the same findings (see column LC n=20 in Tables S2-S7). 
 Classification of lesion location was done from MR imaging or CT scans 
 (see below) by a neurologist (SGM).
 
@@ -2582,11 +2677,11 @@ self-reported levels of apathy (Apathy Motivation Index[REF];
 *p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "AMI_tot"], d.means$w_pval_hc_lc[d.means$measure == "AMI_tot"], d.means$w_pval_lc_vmPFC[d.means$measure == "AMI_tot"]), digits=2), nsmall=2)`), or performance on a neuropsychological test of cognitive abilities and visual attention (Trail Making Test[REF]; Part A 
 *p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "Trail_A"], d.means$w_pval_lc_vmPFC[d.means$measure == "Trail_A"]), digits=2), nsmall=2)`, Part B 
 *p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "Trail_B"], d.means$w_pval_lc_vmPFC[d.means$measure == "Trail_B"]), digits=2), nsmall=2)`).
-
-The vmPFC group also did not differ from controls in 
+The vmPFC group also did not differ from either control group in self-reported levels of 
 depression (Beck Depression Inventory[REF]; 
 *p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "BDI_total"], d.means$w_pval_lc_vmPFC[d.means$measure == "BDI_total"]), digits=2), nsmall=2)`)
-
+and were matched to lesion controls in the extent of their education 
+(*p*`r pvalrf(d.means$w_pval_lc_vmPFC[d.means$measure == "Qualification"])`; Table S1).
 
 ## Results
 
@@ -2605,22 +2700,8 @@ that independently manipulated effort, reward, and recipient.
 Participants chose between a low-effort, low-reward “rest” option and a 
 high-effort high-reward “work” option on each trial. On half of the trials, the reward was for themselves 
 (self) and on the other half, the reward was for an anonymous other person (other; see Methods and Figure 2). 
-The groups were carefully matched, with no differences in gender, age, cognitive ability, or levels of apathy 
-or depression (See Methods and Table S1).  
-
-
-gender
-(`r "<i>\u03C7</i>"`<sup>2</sup><sub>(`r diff.gender[["parameter"]][["df"]]`)</sub>=
-`r format(round(diff.gender[["statistic"]][["X-squared"]], digits=2), nsmall=2)`,
-*p*`r pvalrf(diff.gender[["p.value"]])`) or age
-(*p*s>`r min(d.means$w_pval_hc_vmPFC[d.means$measure == "Age"], d.means$w_pval_hc_lc[d.means$measure == "Age"], d.means$w_pval_lc_vmPFC[d.means$measure == "Age"])`). 
-The vmPFC group also did not differ from the control groups in self-reported levels of apathy (Apathy Motivation Index[REF]; 
-*p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "AMI_tot"], d.means$w_pval_hc_lc[d.means$measure == "AMI_tot"], d.means$w_pval_lc_vmPFC[d.means$measure == "AMI_tot"]), digits=2), nsmall=2)`),
-depression (Beck Depression Inventory[REF]; 
-*p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "BDI_total"], d.means$w_pval_hc_lc[d.means$measure == "BDI_total"], d.means$w_pval_lc_vmPFC[d.means$measure == "BDI_total"]), digits=2), nsmall=2)`)
-or performance on a neuropsychological test of cognitive abilities and visual attention (Trail Making Test[REF]; Part A 
-*p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "Trail_Making_A_(seconds)'"], d.means$w_pval_lc_vmPFC[d.means$measure == "Trail_Making_A_(seconds)'"]), digits=2), nsmall=2)`, Part B 
-*p*s>`r format(round(min(d.means$w_pval_hc_vmPFC[d.means$measure == "Trail_Making_B_(seconds)'"], d.means$w_pval_lc_vmPFC[d.means$measure == "Trail_Making_B_(seconds)'"]), digits=2), nsmall=2)`).
+The groups were carefully matched, with no differences in gender, age, cognitive ability, or levels of apathy (see Methods and Table S1).
+The two lesion groups also did not differ from each other in education or depression (see Methods and Table S1). However, the vmPFC and LC groups did differ from healthy controls in level of education. We therefore repeated all our behavioural analysis controlling for education as a covariate. Controlling for education did not change any of our key results or inferences regarding group differences in prosocial behaviour (see Tables S2-S7).
 
 ### *Patients with vmPFC damage earn less money for the other person*
 
@@ -2628,13 +2709,13 @@ Our first analysis examined how many credits participants earned for themselves 
 which translated into bonus money for each recipient. We tested whether the number of credits earned differed between 
 the three groups (vmPFC, HC, LC) using a generalised linear mixed-effects model (GLMM, see Methods and Table S2). 
 Patients with vmPFC damage earned fewer credits for other relative to self, compared to both control groups
-(group\*recipient interaction vmPFC vs. HC
-b [95% confidence interval]=`r format(round(r.credits$Coefficient[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
+(group\*recipient interaction vmPFC vs. HC odds ratio<sub>(`r r.credits.full$df_error[1]`)</sub>
+(OR) [95% confidence interval]=`r format(round(r.credits$Coefficient[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
 [`r format(round(r.credits$CI_low[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`,
 `r format(round(r.credits$CI_high[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.credits$p[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`;
 vmPFC vs. LC
-b=`r format(round(r.credits$Coefficient[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`
+OR<sub>(`r r.credits.full$df_error[1]`)</sub>=`r format(round(r.credits$Coefficient[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`
 [`r format(round(r.credits$CI_low[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`,
 `r format(round(r.credits$CI_high[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.credits$p[r.credits$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"])`; Figure 3A). 
@@ -2647,14 +2728,17 @@ Z=`r format(round(credits.con.all$z.ratio[credits.con.all$contrast == "other vmP
 and patients with damage elsewhere (ratio=`r format(round(credits.con.all$ratio[credits.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
 SE=`r format(round(credits.con.all$SE[credits.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
 Z=`r format(round(credits.con.all$z.ratio[credits.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(credits.con.all$p.value[credits.con.all$contrast == "other vmPFC / other LC"])`; Table S2). 
-
-In contrast, vmPFC patients earned the same amount as lesion controls for themselves 
-(ratio=`r format(round(credits.con.all$ratio[credits.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`, 
+*p*`r pvalrf(credits.con.all$p.value[credits.con.all$contrast == "other vmPFC / other LC"])`). 
+In contrast, vmPFC patients and lesion controls did not statistically differ in the amount they earned for themselves, with Bayesian evidence supporting the null 
+(ratio=`r format(round(credits.con.all$ratio[credits.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
+SE=`r format(round(credits.con.all$SE[credits.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
+Z=`r format(round(credits.con.all$z.ratio[credits.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
 *p*`r pvalrf(credits.con.all$p.value[credits.con.all$contrast == "self vmPFC / self LC"])`, 
-Bayes factor (BF<sub>01</sub>)=`r format(round(credits.bf01.lc.vmpfc.self$bf, digits=2), nsmall=2)`; see Methods)
-and did not significantly differ from healthy controls
-ratio=`r format(round(min(credits.con.all$ratio[credits.con.all$contrast == "self vmPFC / self HC"]), digits=2), nsmall=2)`, 
+Bayes factor (BF<sub>01</sub>)=`r format(round(credits.bf01.lc.vmpfc.self$bf, digits=2), nsmall=2)`; see Methods).
+Patients with vmPFC damage also did not significantly differ from healthy controls 
+ratio=`r format(round(min(credits.con.all$ratio[credits.con.all$contrast == "self vmPFC / self HC"]), digits=2), nsmall=2)`,
+SE=`r format(round(credits.con.all$SE[credits.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
+Z=`r format(round(credits.con.all$z.ratio[credits.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
 *p*`r pvalrf(credits.con.all$p.value[credits.con.all$contrast == "self vmPFC / self HC"])`, 
 BF<sub>01</sub>=`r format(round(credits.bf01.hc.vmpfc.self$bf, digits=2), nsmall=2)`). 
 The two control groups did not significantly differ in the number of credits earned for either recipient 
@@ -2668,8 +2752,7 @@ SE=`r format(round(credits.con.all$SE[credits.con.all$contrast == "self HC / sel
 Z=`r format(round(credits.con.all$z.ratio[credits.con.all$contrast == "self HC / self LC"], digits=2), nsmall=2)`,
 *p*`r pvalrf(credits.con.all$p.value[credits.con.all$contrast == "self HC / self LC"])`, 
 BF<sub>01</sub>=`r format(round(credits.bf01.hc.lc.self$bf, digits=2), nsmall=2)`).
-Together, these results show that damage, specifically to vmPFC, decreased rewards earned for the other person, 
-but not the participant themselves.
+Together, these results show that damage, specifically to vmPFC, decreased rewards earned for the other person.
 
 #### Figure 2
 
@@ -2683,7 +2766,14 @@ players <- ggdraw() + draw_image(players)
 
 task.plt <- plot_grid(task, players, ncol = 2, rel_widths = c(2,1), rel_heights = c(1,1), labels = c("a","b"), label_size = axtitle, axis = "tb", align = "h")
 
-task.plt
+print(task.plt)
+
+graphname <- paste0(path,'Figure_2.tiff')
+
+if (savefullplots == 1) 
+  {tiff(graphname, units="in", width = 12, height = 7.5, res = resolution)
+  print(task.plt)
+  dev.off()}
 
 ```
 **Figure 2. Effort-based decision-making task with rewards for self or other. (a)** Before any further instructions, participants squeezed as hard as they could to measure their maximum voluntary contraction (MVC) on a handheld dynamometer to threshold each effort level to their strength. After thresholding and practice, participants chose on each trial between a “rest” option, which required no effort (0% MVC, one segment of the pie chart) for a low reward of 1 credit, and a “work” option, which required more effort (30%–70% MVC, 2–6 pie chart segments) and gained more reward (2–10 credits). The reward available and effort required were manipulated independently. After making their choice, participants had to exert the required force (shown by the yellow line) for at least 1s of a 3s window to receive the reward. Visual feedback on the amount of force used was displayed on the screen. Participants then saw the outcome, depending on the offer they had chosen and whether they were successful. If they did not meet the required force level, “0 credits” was displayed. Crucially, on self-trials, participants made the choice, exerted the effort, and received the reward themselves, whereas on other trials (“AMY” in this example), participants made the choice and exerted the effort, but the other participant received the reward. **(b)** Participants were designated as “Player 1” (self) and told that their decisions impacted another player “Player 2” (other) whom they met at the beginning of the testing session with their identity obscured (to control for influences of identity or reciprocity). The name used in the task was gender-matched to the participant. The procedure involved 4 people, two experimenters, EXP1 and EXP2, and two participants, self and other.
@@ -2691,7 +2781,7 @@ task.plt
 ### *Damage to vmPFC decreases prosocial behaviour*
 
 To examine what was driving the group difference in the broad measure of credits earned, 
-we first considered participants’ willingness to choose the high-effort option over rest. 
+we first considered participants’ willingness to choose the high-effort work option over rest. 
 Using a binomial GLMM (see Methods), we tested whether vmPFC lesions affected prosociality 
 (recipient\*group interaction) in choices. 
 Analysing choices on each trial also enabled us to test group differences in sensitivity to rewards (reward level 2-6: 2, 4, 6, 8 or 10 credits) and effort (effort level 2-6: 30, 40, 50, 60 or 70% of maximum, squared to match computational model; see Methods). We also considered the possibility of higher-order interactions by starting with a maximal model containing fixed effects of and all interactions (up to 4-way) between effort, reward, recipient, and group, as well as random effects and all interactions (up to 3-way) between effort, reward, and recipient. Data-driven model reduction suggested that no interaction terms between more than two variables significantly improved the model (see Methods).
@@ -2704,7 +2794,7 @@ Z=`r format(round(choice.con.all$z.ratio[choice.con.all$contrast == "other vmPFC
 OR=`r format(round(choice.con.all$odds.ratio[choice.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
 SE=`r format(round(choice.con.all$SE[choice.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
 Z=`r format(round(choice.con.all$z.ratio[choice.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(choice.con.all$p.value[choice.con.all$contrast == "other vmPFC / other LC"])`). 
+*p*`r pvalrf(choice.con.all$p.value[choice.con.all$contrast == "other vmPFC / other LC"])`; Figure 3B). 
 In contrast, the vmPFC group was equally willing to exert effort to benefit themselves compared to both control groups 
 (vmPFC vs. HC OR=`r format(round(choice.con.all$odds.ratio[choice.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
 SE=`r format(round(choice.con.all$SE[choice.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
@@ -2739,25 +2829,32 @@ behav.plt <- plot_grid(credit.plt, choice.plt, choice.e.plt, choice.r.plt, ncol 
 
 print(behav.plt)
 
+graphname <- paste0(path,'Figure_3.tiff')
+
+if (savefullplots == 1) 
+  {tiff(graphname, units="in", width = 8, height = 10, res = resolution)
+  print(behav.plt)
+  dev.off()}
+
 ```
 <br>
 **Figure 3. Damage to vmPFC decreases prosociality and effort sensitivity.** 
 vmPFC lesions decreased willingness to help others measured as 
 **(a)** earning fewer credits for the other player, 
-but not for themselves, **(b)** 
+but not for themselves and **(b)** 
 accepting fewer high-effort high-reward “work” offers for other, but not themselves. 
 Asterisks between groups represent significant interactions between the recipient 
 (self or other) and group in the (G)LMM. Asterisks between self and other represent 
-significant differences (p<0.05) within each group in post-hoc comparisons. Significance 
+significant differences within each group in post-hoc comparisons (*p*<0.05 uncorrected: follow-ups of significant GLMM interactions). Significance 
 for comparisons between groups for each recipient are not depicted but show the significant 
 recipient\*group interactions are driven by vmPFC patients earning significantly fewer credits 
 and accepting significantly fewer work offers for the other person, compared to both control groups
-(*p*s<`r format(round(max(credits.con.all$p.value[credits.con.all$contrast == "other HC / other vmPFC"], credits.con.all$p.value[credits.con.all$contrast == "other vmPFC / other LC"], choice.con.all$p.value[choice.con.all$contrast == "other HC / other vmPFC"], choice.con.all$p.value[choice.con.all$contrast == "other vmPFC / other LC"]), digits=2), nsmall=2)`; see Results).
+(*p*s<`r format(round(max(credits.con.all$p.value[credits.con.all$contrast == "other vmPFC / other HC"], credits.con.all$p.value[credits.con.all$contrast == "other vmPFC / other LC"], choice.con.all$p.value[choice.con.all$contrast == "other vmPFC / other HC"], choice.con.all$p.value[choice.con.all$contrast == "other vmPFC / other LC"]), digits=2), nsmall=2)`; see Results).
 In contrast, there were no significant differences between vmPFC patients 
 and the control groups in self-benefitting decision-making 
-(*p*s>`r format(round(min(credits.con.all$p.value[credits.con.all$contrast == "self HC / self vmPFC"], credits.con.all$p.value[credits.con.all$contrast == "self vmPFC / self LC"], choice.con.all$p.value[choice.con.all$contrast == "self HC / self vmPFC"], choice.con.all$p.value[choice.con.all$contrast == "self vmPFC / self LC"], k.con.all$p.value[k.con.all$contrast == "self HC / self vmPFC"], k.con.all$p.value[k.con.all$contrast == "self vmPFC / self LC"]), digits=2), nsmall=2)`) and 
-there was Bayesian evidence of no difference between groups in credits earned (vs. LC) and choices to work for self-benefitting rewards
-`r format(round(min(choices.bf01.hc.vmpfc.self$bf, choices.bf01.lc.vmpfc.self$bf,  credits.bf01.lc.vmpfc.self$bf), digits=2), nsmall=2)`<BF<sub>01</sub><`r format(round(max(choices.bf01.hc.vmpfc.self$bf, choices.bf01.lc.vmpfc.self$bf, credits.bf01.lc.vmpfc.self$bf), digits=2), nsmall=2)`.
+(*p*s>`r format(round(min(credits.con.all$p.value[credits.con.all$contrast == "self vmPFC / self HC"], credits.con.all$p.value[credits.con.all$contrast == "self vmPFC / self LC"], choice.con.all$p.value[choice.con.all$contrast == "self vmPFC / self HC"], choice.con.all$p.value[choice.con.all$contrast == "self vmPFC / self LC"]), digits=2), nsmall=2)`) and 
+there was Bayesian evidence of no difference between groups in credits earned (vs. LC) and choices to work for self-benefitting rewards (BF<sub>01</sub>>
+`r format(round(min(choices.bf01.hc.vmpfc.self$bf, choices.bf01.lc.vmpfc.self$bf,  credits.bf01.lc.vmpfc.self$bf), digits=2), nsmall=2)`).
 **(c)** The effect of effort on decision-making differed between vmPFC patients and participants 
 without brain damage (estimates from generalised linear mixed-effects model (GLMM) of binary choices between work and rest; group\*effort interaction 
 OR=`r format(round(r.choice$Coefficient[r.choice$Parameter == "Effort * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
@@ -2765,29 +2862,13 @@ OR=`r format(round(r.choice$Coefficient[r.choice$Parameter == "Effort * Group (v
 `r format(round(r.choice$CI_high[r.choice$Parameter == "Effort * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.choice$p[r.choice$Parameter == "Effort * Group (vmPFC vs. HC)"])`).
 This group difference in effort sensitivity was driven by vmPFC patients’ reduced willingness to accept the work offer at the 
-lower effort levels compared to healthy controls. Asterisks represent significant differences (*p*<0.05) in post-hoc comparisons 
-at each effort level. **(d)** In contrast, there were no significant group differences in how reward affected decisions. 
+lower effort levels compared to healthy controls. Asterisks represent significant differences in post-hoc comparisons 
+at each effort level (*p*<0.05 uncorrected: follow-ups of significant GLMM interactions). 
+**(d)** In contrast, there were no significant group differences in how reward affected decisions. 
 All three groups were more willing to exert effort as the reward available increased, and there was no evidence that this 
 sensitivity to reward was significantly different in the vmPFC group.
 
-higher discounting of rewards by
-effort (`r "<i>\u039A</i>"`) for other relative to self.
-Asterisks between groups represent significant interactions (*p*\<0.05) between recipient 
-(self or other) and group in the (G)LMM. 
-Asterisks between self and other represent significant differences (*p*\<0.05) in post-hoc
-comparisons based on (G)LMMs with the relevant link function for the
-data distribution (gamma for credits, binomial for choices, log for `r "<i>\u039A</i>"`). 
-Results of post-hoc comparisons between groups for each recipient are not depicted but showed 
-the significant recipient\*group interactions are driven by vmPFC patients earning significantly 
-fewer credits and accepting significantly fewer work offers for the other person, compared to both control groups 
-(*p*s<`r format(round(max(credits.con.all$p.value[credits.con.all$contrast == "other HC / other vmPFC"], credits.con.all$p.value[credits.con.all$contrast == "other vmPFC / other LC"], choice.con.all$p.value[choice.con.all$contrast == "other HC / other vmPFC"], choice.con.all$p.value[choice.con.all$contrast == "other vmPFC / other LC"]), digits=2), nsmall=2)`; 
-Table S2, Table S4 & Table S6). In contrast, there were no significant differences between vmPFC patients 
-and the control groups in self-benefitting decision-making for credits, 
-choices or `r "<i>\u039A</i>"` parameters
-(*p*s>`r format(round(min(credits.con.all$p.value[credits.con.all$contrast == "self HC / self vmPFC"], credits.con.all$p.value[credits.con.all$contrast == "self vmPFC / self LC"], choice.con.all$p.value[choice.con.all$contrast == "self HC / self vmPFC"], choice.con.all$p.value[choice.con.all$contrast == "self vmPFC / self LC"], k.con.all$p.value[k.con.all$contrast == "self HC / self vmPFC"], k.con.all$p.value[k.con.all$contrast == "self vmPFC / self LC"]), digits=2), nsmall=2)`) and 
-there was Bayesian evidence of no difference between groups in credits earned and choices to work for self-benefitting rewards.
-
-### *vmPFC lesions alter effort sensitivity*
+### *vmPFC lesions decrease effort sensitivity*
 
 Analysis of sensitivity to effort also revealed a significant difference between healthy controls and vmPFC patients 
 (group\*effort interaction OR=`r format(round(r.choice$Coefficient[r.choice$Parameter == "Effort * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
@@ -2836,53 +2917,33 @@ Analysis of sensitivity to reward showed participants in all three groups chose 
 (vmPFC GLMM OR=`r format(round(r.choice$Coefficient[r.choice$Parameter == "Reward"], digits=2), nsmall=2)`
 [`r format(round(r.choice$CI_low[r.choice$Parameter == "Reward"], digits=2), nsmall=2)`,
 `r format(round(r.choice$CI_high[r.choice$Parameter == "Reward"], digits=2), nsmall=2)`],
-*p*`r pvalrf(r.choice$p[r.choice$Parameter == "Reward"])`; Figure 3D).
-Across groups, we observed that people were more likely to choose the higher effort option as reward increased, 
-and when the reward was for themselves compared to another person (recipient\*reward interaction
+*p*`r pvalrf(r.choice$p[r.choice$Parameter == "Reward"])`; Figure 3D)), particularly when the reward was for themselves compared to another person 
+(recipient\*reward interaction
 OR=`r format(round(r.choice$Coefficient[r.choice$Parameter == "Reward * Recipient (Self vs. Other)"], digits=2), nsmall=2)`
 [`r format(round(r.choice$CI_low[r.choice$Parameter == "Reward * Recipient (Self vs. Other)"], digits=2), nsmall=2)`,
 `r format(round(r.choice$CI_high[r.choice$Parameter == "Reward * Recipient (Self vs. Other)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.choice$p[r.choice$Parameter == "Reward * Recipient (Self vs. Other)"])`).
-However, of group differences in reward processing (Figure 3D). The group\*reward interaction was not selected as a term in 
+However, there was no evidence of group differences in reward processing (Figure 3D). 
+The group\*reward interaction was not selected as a term in 
 the GLMM and there was strong evidence against adding it to the best-fitting model 
 (`r "\u0394"` deviance 
 `r "<i>\u03C7</i>"`<sup>2</sup><sub>(`r anova.RGinter$Df[2]`)</sub>=`r format(round(anova.RGinter$Chisq[2], digits=2), nsmall=2)`,
 *p*`r pvalrf(anova.RGinter$P[2])`,
 `r "\u0394"` BIC=`r anova.RGinter$BIC[2] - anova.RGinter$BIC[1]`, BF<sub>01</sub>=`r format(round(bf01.RGinter, digits=2), nsmall=2)`).
 
-As expected, the GLMM of choices also showed participants overall chose to work more when
-rewards were for themselves, compared to someone else
-(OR=`r format(round(r.choice$Coefficient[r.choice$Parameter == "Recipient (Self vs. Other)"], digits=2), nsmall=2)`
-[`r format(round(r.choice$CI_low[r.choice$Parameter == "Recipient (Self vs. Other)"], digits=2), nsmall=2)`,
-`r format(round(r.choice$CI_high[r.choice$Parameter == "Recipient (Self vs. Other)"], digits=2), nsmall=2)`],
-*p*`r pvalrf(r.choice$p[r.choice$Parameter == "Recipient (Self vs. Other)"])`), 
-also showed that the increase in willingness to work as the reward available
-increased was larger when the reward was for themselves (effect of reward for
-self=`r format(round(choice.con.ar$Reward.trend[choice.con.ar$Recipient_s2z == "self"], digits=2), nsmall=2)`
-[`r format(round(choice.con.ar$asymp.LCL[choice.con.ar$Recipient_s2z == "self"], digits=2), nsmall=2)`,
-`r format(round(choice.con.ar$asymp.UCL[choice.con.ar$Recipient_s2z == "self"], digits=2), nsmall=2)`]),
-compared to someone else (effect of reward for
-other=`r format(round(choice.con.ar$Reward.trend[choice.con.ar$Recipient_s2z == "other"], digits=2), nsmall=2)`
-[`r format(round(choice.con.ar$asymp.LCL[choice.con.ar$Recipient_s2z == "other"], digits=2), nsmall=2)`,
-`r format(round(choice.con.ar$asymp.UCL[choice.con.ar$Recipient_s2z == "other"], digits=2), nsmall=2)`]). 
-
 ### *Reward devaluation by effort depends on recipient*
 
-So far, we have shown vmPFC damage has a detrimental impact on prosocial decision-making, and that this is at least partially due to vmPFC patients’ lower willingness to exert effort for prosocial rewards, compared to both control groups. Next, we fitted computational models of effort-discounting to participants’ choice behaviour to precisely quantify how the effort required was integrated with the reward available to determine choices for self or other. Importantly, these models separate the extent to which effort devalues the reward (discounting `r "<i>\u039A</i>"` parameter) 
-from choice consistency (stochasticity `r "<i>\u03B2</i>"` (beta) parameter) and therefore allow us to test which of these parameters differ 
+So far, we have shown vmPFC damage has a detrimental impact on prosocial decision-making, and that this is at least partially due to vmPFC patients’ lower willingness to exert prosocial effort, compared to both control groups. Next, we fitted computational models of effort-discounting to participants’ choice behaviour to precisely quantify how the effort required was integrated with the reward available to determine choices for self or other. Importantly, these models separate the extent to which effort devalues the reward (discounting `r "<i>\u039A</i>"` parameter) 
+from choice consistency (inverse stochasticity `r "<i>\u03B2</i>"` parameter) and therefore allow us to test which of these parameters differ 
 between recipients and groups.
 
 We fit and compared multiple models to participants' 
 choice behaviour using a hierarchical expectation maximisation approach... [paragraph only in word doc for refs]. 
-We also established the robustness of our winning model and model
-comparison procedure using simulated data. These simulations showed good
-recovery of all parameters
+The robustness of the model comparison procedure and winning model was established using simulated data (see Methods). Model identifiability results demonstrated perfect identifiability (Figure 4A). The simulations also showed very good recovery of all parameters in the 2`r "<i>\u039A</i>"`2`r "<i>\u03B2</i>"` winning model
 (`r paste0("<i>\u039A</i>","<sub>self</sub>","\u003D",format(round(df.pr$HCorr[df.pr$Simulated == 1 & df.pr$Recovered == 1], digits=2), nsmall=2))`,
 `r paste0("<i>\u039A</i>","<sub>other</sub>","\u003D",format(round(df.pr$HCorr[df.pr$Simulated == 2 & df.pr$Recovered == 2], digits=2), nsmall=2))`,
 `r paste0("<i>\u03B2</i>","<sub>self</sub>","\u003D",format(round(df.pr$HCorr[df.pr$Simulated == 3 & df.pr$Recovered == 3], digits=2), nsmall=2))`,
-`r paste0("<i>\u03B2</i>","<sub>other</sub>","\u003D",format(round(df.pr$HCorr[df.pr$Simulated == 4 & df.pr$Recovered == 4], digits=2), nsmall=2))`)
-and that the models were identifiable (see Supplementary Methods and
-Figure 4).
+`r paste0("<i>\u03B2</i>","<sub>other</sub>","\u003D",format(round(df.pr$HCorr[df.pr$Simulated == 4 & df.pr$Recovered == 4], digits=2), nsmall=2))`).
 
 #### Figure 4
 
@@ -2919,168 +2980,89 @@ model.plot <- plot_grid(model.plot.left, model.plot0, model.plot.right, ncol = 3
 
 print(model.plot)
 
+graphname <- paste0(path,'Figure_4.tiff')
+
+if (savefullplots == 1) 
+  {tiff(graphname, units="in", width = 12, height = 10, res = resolution)
+  print(model.plot)
+  dev.off()}
+
 ```
 **Figure 4. A computational neurology approach reveals vmPFC damage increases discounting of rewards for other by effort. (a)** 
-Results of model identifiability analysis show a strong diagonal across the majority of the average exceedance probability confusion matrix, meaning the models of interest can be accurately identified. We simulated ten datasets each with 100 artificial agents, using each of the 12 models. Parameters were drawn at random from a flat distribution between the upper and lower bounds used when fitting the model to participant data 
-(0<`r "<i>\u039A</i>"`<1.5, 0`r "<i>\u03B2</i>"`<4). We then fit each dataset using the same model fitting and comparison procedure applied to participant data and plotted the confusion matrix from the exceedance probability averaged across the ten runs. **(b)** Model comparison of the 12 candidate models shows the 2`r "<i>\u039A</i>"`2`r "<i>\u03B2</i>"` parabolic model best fits the participant data based on multiple fit metrics. This model had a parabolic discounting function and contained separate discounting and choice stochasticity parameters for self and other. It had the highest exceedance probability (XP=1), lowest integrated BIC, and explained the highest proportion of variance in choices (R`r "<sup>2</sup>"`=0.87). **(c)** Strong parameter recovery for the 2`r "<i>\u039A</i>"`2`r "<i>\u03B2</i>"` is shown by the high correlations on the diagonal between simulated and recovered parameter values and low off-diagonal correlations. Simulations for parameter recovery used a grid of values for `r "<i>\u039A</i>"` (0, 0.3, 0.6, 0.9, 1.2, 1.5) and `r "<i>\u03B2</i>"` (0, 1, 2, 3, 4), with added noise drawn from a normal distribution * 0.05, to cover the full range of possible values. **(d)** Comparing discounting `r "<i>\u039A</i>"` parameters
-from the winning model between recipients and groups shows vmPFC damage increases discounting of prosocial rewards. Asterisks between groups represent significant interactions between the recipient (self or other) and group in the (G)LMM. Asterisks between self and other represent significant differences (*p*<0.05) within each group in post-hoc comparisons. 
+Results of model identifiability analysis show a strong diagonal across the average exceedance probability confusion matrix, meaning the models of interest can be accurately identified. We simulated ten datasets each with 100 artificial agents, using each of the 12 models. Parameters were drawn at random from a flat distribution between the upper and lower bounds used when fitting the model to participant data 
+(0<`r "<i>\u039A</i>"`<1.5, 0<`r "<i>\u03B2</i>"`<4). We then fit each dataset using the same model fitting and comparison procedure applied to participant data and plotted the confusion matrix from the exceedance probability averaged across the ten runs. **(b)** Model comparison of the 12 candidate models shows the 2`r "<i>\u039A</i>"`2`r "<i>\u03B2</i>"` parabolic model best fits the participant data based on multiple fit metrics. This model had a parabolic discounting function and contained separate discounting and choice stochasticity parameters for self and other. It had the highest exceedance probability (XP=1), lowest integrated BIC, and explained the highest proportion of variance in choices (R`r "<sup>2</sup>"`=0.87). **(c)** Strong parameter recovery for the 2`r "<i>\u039A</i>"`2`r "<i>\u03B2</i>"` is shown by the high correlations on the diagonal between simulated and recovered parameter values and low off-diagonal correlations. Simulations for parameter recovery used a grid of values for `r "<i>\u039A</i>"` (0, 0.3, 0.6, 0.9, 1.2, 1.5) and `r "<i>\u03B2</i>"` (0, 1, 2, 3, 4), with added noise drawn from a normal distribution * 0.05, to cover the full range of possible values. **(d)** Comparing discounting (`r "<i>\u039A</i>"`) parameters
+from the winning model between recipients and groups shows vmPFC damage increases discounting of prosocial rewards. Asterisks between groups represent significant interactions between the recipient (self or other) and group in the GLMM. Asterisks between self and other represent significant differences within each group in post-hoc comparisons (*p*<0.05 uncorrected: follow-ups of significant GLMM interactions).
 
 ### *vmPFC lesions increase the discounting of prosocial rewards by effort*
 
 After establishing the 2`r "<i>\u039A</i>"`2`r "<i>\u03B2</i>"` model
-was robust and best fit the data, we assessed whether the estimated
-`r "<i>\u039A</i>"` parameters differed between the three groups and two recipients 
-using a  GLMM. All groups showed higher effort discounting of rewards for other compared to self (Figure
-3, Table S1 and Table S2) indicating that the
-bias towards helping oneself, reported previously, occurs regardless of
-lesion location. However, as with the analysis of credits earned and choices to work, 
-damage to vmPFC specifically decreased prosociality on this measure. 
-The effort required to obtain rewards devalued prosocial rewards to a greater extent 
-than self-benefitting rewards for the patients with vmPFC damage, 
-compared to both control participants with lesions
-elsewhere (group\*recipient interaction 
-b=`r format(round(r.k$Coefficient[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`
+was robust and best fit the data, we assessed whether the
+`r "<i>\u039A</i>"` parameters differed between groups with a  GLMM (see Methods).
+Damage to vmPFC decreased prosociality compared to both control groups 
+(group\*recipient interaction vmPFC vs. LC
+OR=`r format(round(r.k$Coefficient[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`
 [`r format(round(r.k$CI_low[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`,
 `r format(round(r.k$CI_high[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`],
-*p*`r pvalrf(r.k$p[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"])`)
-and participants without lesions
-(b=`r format(round(r.k$Coefficient[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
+*p*`r pvalrf(r.k$p[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"])`;
+vmPFC vs. HC
+OR=`r format(round(r.k$Coefficient[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
 [`r format(round(r.k$CI_low[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`,
 `r format(round(r.k$CI_high[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.k$p[r.k$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`; 
-Figure 2 and Table S2). Post-hoc and Bayesian contrasts comparing patients with vmPFC to control lesions
-showed effort discounting for self was the same regardless of lesion location 
-(ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
+Figure 4D & Table S4). 
+Patients with vmPFC lesions specifically increased how much rewards for another person were discounted, whereas effort discounting for self 
+was the same regardless of lesion location (vmPFC vs. LC:
+other ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
+SE=`r format(round(k.con.all$SE[k.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
+Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
+*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "other vmPFC / other LC"])`;
+self ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
 SE=`r format(round(k.con.all$SE[k.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
 Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "self vmPFC / self LC"], digits=2), nsmall=2)`,
 *p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "self vmPFC / self LC"])`,
-BF<sub>01</sub>=`r format(round(k.bf01.lc.vmpfc.self$bf, digits=2), nsmall=2)`), 
-whereas damage to vmPFC specifically increased how much rewards for another person were discounted by the effort required 
-(ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
-SE=`r format(round(k.con.all$SE[k.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
-Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "other vmPFC / other LC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "other vmPFC / other LC"])`). 
-Comparing vmPFC patients with healthy controls showed this significant group\*recipient interaction was also driven by vmPFC patients discounting 
-rewards for other relative to self more than healthy controls (Figure 2), although comparing each recipient separately between these groups 
-did not show either significant differences or evidence of no difference 
-(self ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
-SE=`r format(round(k.con.all$SE[k.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
-Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "self vmPFC / self HC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "self vmPFC / self HC"])`,
-BF<sub>01</sub>=`r format(round(k.bf01.hc.vmpfc.self$bf, digits=2), nsmall=2)`; 
-other ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "other vmPFC / other HC"], digits=2), nsmall=2)`,
-SE=`r format(round(k.con.all$SE[k.con.all$contrast == "other vmPFC / other HC"], digits=2), nsmall=2)`,
-Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "other vmPFC / other HC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "other vmPFC / other HC"])`, 
-BF<sub>01</sub>=`r format(round(k.bf01.hc.vmpfc.other$bf, digits=2), nsmall=2)`). 
-The two control groups also did not significantly differ in discounting for self or other, but these contrasts 
-also lacked the sensitivity to support evidence of no difference 
-(self ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "self HC / self LC"], digits=2), nsmall=2)`,
-SE=`r format(round(k.con.all$SE[k.con.all$contrast == "self HC / self LC"], digits=2), nsmall=2)`,
-Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "self HC / self LC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "self HC / self LC"])`,
-BF<sub>01</sub>=`r format(round(k.bf01.hc.lc.self$bf, digits=2), nsmall=2)`; 
-other ratio=`r format(round(k.con.all$ratio[k.con.all$contrast == "other HC / other LC"], digits=2), nsmall=2)`,
-SE=`r format(round(k.con.all$SE[k.con.all$contrast == "other HC / other LC"], digits=2), nsmall=2)`,
-Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "other HC / other LC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "other HC / other LC"])`, 
-BF<sub>01</sub>=`r format(round(k.bf01.hc.lc.other$bf, digits=2), nsmall=2)`). 
-
-Prosociality did not differ between the control groups (post-hoc group\*recipient 
+BF<sub>01</sub>=`r format(round(k.bf01.lc.vmpfc.self$bf, digits=2), nsmall=2)`).
+In contrast, levels of prosociality did not differ between the two control groups (post-hoc group\*recipient 
 interaction=`r format(round(k.con.all$ratio[k.con.all$contrast == "(self / other HC) / (self / other LC)"], digits=2), nsmall=2)`,
 SE=`r format(round(k.con.all$SE[k.con.all$contrast == "(self / other HC) / (self / other LC)"], digits=2), nsmall=2)`,
 Z=`r format(round(k.con.all$z.ratio[k.con.all$contrast == "(self / other HC) / (self / other LC)"], digits=2), nsmall=2)`,
-*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "(self / other HC) / (self / other LC)"])`
+*p*`r pvalrf(k.con.all$p.value[k.con.all$contrast == "(self / other HC) / (self / other LC)"])`) further supporting the specificity of vmPFC damage. Finally, all groups showed higher effort discounting of rewards for other compared to self (Figure 4D) indicating that the bias towards helping oneself, occurs across healthy controls and patients, regardless of lesion location. 
 
-We used the same approach to examine whether vmPFC damage results
-in differences in decision noise (stochasticity `r "<i>\u03B2</i>"`
-parameter) in an LMM. Across all groups, participants made noisier decisions in 
+We used the same approach to examine whether vmPFC damage affected
+decision consistency (inverse stochasticity `r "<i>\u03B2</i>"`
+parameter). Across all groups, participants made less consistent decisions in 
 the prosocial compared to the self-benefiting condition 
-(*p*s`r pvalrf(min(beta.con.all$p.value[beta.con.all$contrast == "self vmPFC - other vmPFC"], beta.con.all$p.value[beta.con.all$contrast == "self LC - other LC"], beta.con.all$p.value[beta.con.all$contrast == "self HC - other HC"]))`; Figure S1, Table S3 & Table S4). 
-In other words, when choosing whether to work to gain rewards for
-someone else, participants choices less closely followed the relative
-value of working compared to resting. However, unlike the
-`r "<i>\u039A</i>"` parameters, there was no evidence this self-other
-difference in `r "<i>\u03B2</i>"` parameters was significantly affected by vmPFC
+(*p*s<`r pvalr(max(beta.con.ag$p.value[beta.con.ag$contrast == "self vmPFC - other vmPFC"], beta.con.ag$p.value[beta.con.ag$contrast == "self LC - other LC"], beta.con.ag$p.value[beta.con.ag$contrast == "self HC - other HC"]))`; Figure S1). 
+However, there was no evidence this self vs. other
+difference was significantly affected by vmPFC
 damage (LMM group\*recipient interactions 
-*p*s>`r min(r.beta$p[r.beta$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], r.beta$p[r.beta$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`). 
-Overall levels of decision noise, across the prosocial and
-self-benefiting conditions, also did not significantly differ between
-the groups (Table S4).
+*p*s>`r format(round(min(r.beta$p[r.beta$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], r.beta$p[r.beta$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"]), digits=2), nsmall=2)`) or that overall levels of decision noise differed between groups
+*p*s>`r format(round(min(r.beta$p[r.beta$Parameter == "Group (vmPFC vs. LC)"], r.beta$p[r.beta$Parameter == "Group (vmPFC vs. HC)"]), digits=2), nsmall=2)`; Table S5).
 
 ### *Patients with vmPFC damage exert less force to help another person*
 
-Decreased prosocial choices and increased effort discounting of prosocial rewards 
-in vmPFC patients at least partially explain why this group earned less credits for the other person 
-than both control groups. Our final behavioural analysis considered how much force participants 
-exerted after choosing the work option. This could also contribute to reduced prosocial outcomes overall as 
-participants earn no credits on trials they choose to work but then do not exert enough force (unsuccessful trials). 
-Analysing force within successful trials also provides a complementary measure to choices and discounting that 
-captures how much participants energise actions that benefit themselves and others.
-As with the choice data, we modelled force (normalised area under the
-curve, see Methods) by reducing a maximal LMM that contained fixed
-effects of and all interactions (up to 4-way) between effort, reward,
-recipient and group, as well as random effects and all interactions (up
-to 3-way) between effort, reward and recipient. Here, we focus on interaction 
-terms that include group to examine differences between the groups
-(see Table S7 for full results).
+Decreased prosocial decisions in vmPFC patients at least partially explain why this group earned fewer credits for the other person than both control groups. Our final behavioural analysis considered how much force participants exerted after choosing to exert effort for themselves or for the other person. As with the choice data, we modelled force (normalised area under the curve, see Methods) by reducing a maximal LMM that contained fixed effects and all interactions (up to 4-way) between effort, reward, recipient, and group, as well as random effects and all interactions (up to 3-way) between effort, reward, and recipient (see Table S6 for full results).
 
-Patients with vmPFC damage exerted less force for other relative to self
-compared to healthy controls (group\*recipient interaction
-b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
+Patients with vmPFC damage exerted less force for the other person relative to self overall, compared to healthy controls
+(group\*recipient interaction
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`],
-*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`), 
+*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`; Figure 5), 
 particularly at higher effort levels (group\*recipient\*effort
 interaction
-b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`],
 *p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`) 
 and when the reward available was lower
 (group\*recipient\*effort\*reward interaction
-b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`],
 *p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"])`;
-Figure 4). This sensitivity to effort and reward in determining the
-force exerted when rewards were for another person is evidence against
-the idea that vmPFC damage meant patients were not attending to the details
-of the work offer in the prosocial condition. 
-Interestingly, in a second analysis, limited to trials on which the participant successfully
-exerted at least the required level of force,
-there was no evidence that any of these interactions improved the model
-fit and they did not feature in the best model (Table S8). This suggests that 
-patients with vmPFC damage sometimes under-exerted force after 
-deciding to help the other person, particularly at high effort and low reward levels, 
-and therefore did not always exert enough force to obtain the prosocial reward, a pattern we
-previously termed 'superficial prosociality'. High average success rates across trials in 
-all three groups demonstrates that superficial prosociality among vmPFC patients was 
-not due to issues accurately exerting the required force overall 
-(vmPFC mean=`r format(round(success.per$mean_success[success.per$Group == "vmPFC"], digits=2), nsmall=2)`%, 
-HC mean=`r format(round(success.per$mean_success[success.per$Group == "HC"], digits=2), nsmall=2)`%, 
-LC mean=`r format(round(success.per$mean_success[success.per$Group == "LC"], digits=2), nsmall=2)`%).
-When contrasting patients with damage to vmPFC to patients
-with damage elsewhere, the only significant interaction was with effort, in 
-the analysis limited to successful trials
-(b=`r format(round(r.force2$Coefficient[r.force2$Parameter == "Effort * Group (vmPFC vs. LC)"], digits=3), nsmall=3)`
-[`r format(round(r.force2$CI_low[r.force2$Parameter == "Effort * Group (vmPFC vs. LC)"], digits=3), nsmall=3)`,
-`r format(round(r.force2$CI_high[r.force2$Parameter == "Effort * Group (vmPFC vs. LC)"], digits=3), nsmall=3)`],
-*p*`r pvalrf(r.force2$p[r.force2$Parameter == "Effort * Group (vmPFC vs. LC)"])`).
-However, lesion control patients also differed from healthy controls in this analysis 
-(post-hoc group\*effort interaction=`r format(round(force1.con.inter.eg$estimate[force1.con.inter.eg$contrast == "HC - LC"], digits=2), nsmall=2)`,
-SE=`r format(round(force1.con.inter.eg$SE[force1.con.inter.eg$contrast == "HC - LC"], digits=2), nsmall=2)`,
-Z=`r format(round(force1.con.inter.eg$z.ratio[force1.con.inter.eg$contrast == "HC - LC"], digits=2), nsmall=2)`,
-*p*`r pvalrf(force1.con.inter.eg$p.value[force1.con.inter.eg$contrast == "HC - LC"])`), whereas healthy 
-controls and vmPFC patients did not significantly differ 
-(LMM group\*effort interaction b=`r format(round(r.force2$Coefficient[r.force2$Parameter == "Effort * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
-[`r format(round(r.force2$CI_low[r.force2$Parameter == "Effort * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`,
-`r format(round(r.force2$CI_high[r.force2$Parameter == "Effort * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`],
-*p*`r pvalrf(r.force2$p[r.force2$Parameter == "Effort * Group (vmPFC vs. HC)"])`). 
-As patients in the lesion control group had damage to
-a wide range of brain areas, we do not further interpret this result.
+Figure S2). Lower exerted force for others is consistent with vmPFC patients exhibiting ‘superficial prosociality’, sometimes deciding to benefit another person but then not energising actions enough to do so. The finding that sensitivity to effort and reward were important in determining the force exerted is also evidence against the idea that vmPFC damage led to inattention to the details of the work offer. 
 
-Interestingly, results revealed that patients with vmPFC successfully exerted the required effort more often for self 
+Next, we directly compared success rates between the two groups to test whether under-exertion of force on prosocial trials led to less reward being delivered to the other person, rather than an over-energisation of action for self. We ran an LMM predicting average success rates in each group for self and other (Table S7). Interestingly, results revealed that patients with vmPFC successfully exerted the required effort more often for self 
 (`r format(round(success.per$mean_success[success.per$Group_vmpfc == "vmPFC" & success.per$Recipient_s2z == "self"], digits=2), nsmall=2)`%
 success rate) 
 than other 
@@ -3099,15 +3081,25 @@ t=`r format(round(success.con.all$t.ratio[success.con.all$contrast == "self HC -
 *p*`r pvalrf(success.con.all$p.value[success.con.all$contrast == "self HC - other HC"])`,
 BF<sub>01</sub>=`r format(round(success.bf01.hc.self.other$bf, digits=2), nsmall=2)`; 
 LMM group\*recipient interaction
-b=`r format(round(r.success$Coefficient[r.success$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
+b<sub>(`r r.success.full$df_error[1]`)</sub>=`r format(round(r.success$Coefficient[r.success$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`
 [`r format(round(r.success$CI_low[r.success$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`,
 `r format(round(r.success$CI_high[r.success$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=3), nsmall=3)`],
 *p*`r pvalrf(r.success$p[r.success$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`). 
+The high success rate vmPFC patients had when rewards were for themselves 
+(`r format(round(success.per$mean_success[success.per$Group_vmpfc == "vmPFC" & success.per$Recipient_s2z == "self"], digits=2), nsmall=2)`%)
+shows that they were perfectly capable of energising actions, suggesting a lack of prosocial motivation caused higher rates of failure for other.
 
 #### Figure 5
 ```{r force-plot, echo = FALSE, warning=FALSE, fig.height=4, fig.width=9.5}
 
 print(force.e.plt)
+
+graphname <- paste0(path,'Figure_5.tiff')
+
+if (savefullplots == 1) 
+  {tiff(graphname, units="in", width = 9.5, height = 4, res = resolution)
+  print(force.e.plt)
+  dev.off()}
 
 ```
 <br>
@@ -3123,38 +3115,41 @@ SE=`r format(round(force1.con.all$SE[force1.con.all$contrast == "self HC - other
 Z=`r format(round(force1.con.all$z.ratio[force1.con.all$contrast == "self HC - other HC"], digits=2), nsmall=2)`,
 *p*`r pvalrf(force1.con.all$p.value[force1.con.all$contrast == "self HC - other HC"])`;
 LMM group\*recipient interaction 
-b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
-*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`).
-This group difference in energising actions to benefit other, relative to self, 
-was particularly large when the level of effort required was greatest (LMM group\*recipient\*effort interaction 
-b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
+*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`)
+or lesion control patients (post-hoc 
+contrast=`r format(round(force1.con.all$estimate[force1.con.all$contrast == "self LC - other LC"], digits=2), nsmall=2)`,
+SE=`r format(round(force1.con.all$SE[force1.con.all$contrast == "self LC - other LC"], digits=2), nsmall=2)`,
+Z=`r format(round(force1.con.all$z.ratio[force1.con.all$contrast == "self LC - other LC"], digits=2), nsmall=2)`,
+*p*`r pvalrf(force1.con.all$p.value[force1.con.all$contrast == "self LC - other LC"])`;
+LMM group\*recipient interaction 
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`
+[`r format(round(r.force1$CI_low[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`,
+`r format(round(r.force1$CI_high[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`],
+*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Recipient (Self vs. Other) * Group (vmPFC vs. LC)"])`).
+The difference between vmPFC patients and healthy controls in energising actions to benefit other, relative to self, was particularly large when the level of effort required was greatest
+(LMM group\*recipient\*effort interaction 
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Group (vmPFC vs. HC)"])`) 
 and also when the reward available was smallest (LMM group\*recipient\*effort\*reward interaction 
-b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
+b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
 *p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"])`;
-Figure S2 & Table S7).
+Figure S2). These interactions were not significant when comparing vmPFC and lesion control groups (Table S6). Asterisk or not significant (n.s) at the end of lines represent recipient\*effort interactions in each group. Asterisks above lines represent significant differences in post-hoc comparisons at each effort level (*p*<0.05 uncorrected: follow-ups of significant GLMM interactions).
 
-In summary, multiple behavioural measures and computational parameters 
-showed damage to vmPFC specifically reduced willingness to exert effort to help 
-another person, compared to controls both with and without lesions. These
-differences in prosociality were found in the absence of group
-differences in choices, discounting, or force exerted for
-oneself. Patients with vmPFC damage also did not show differences in
-reward sensitivity but how effort affect choices was altered compared to
-healthy controls.
+In summary, multiple behavioural measures and computational parameters revealed that damage to vmPFC specifically reduced willingness to exert effort to help another person, compared to controls both with and without lesions. Lesions to vmPFC also led to a lower willingness to energise actions, even after deciding to help others.
 
 ### *Damage to medial vmPFC is associated with decreased willingness to help others whereas lateral vmPFC damage increases prosociality*
 
-[Lesion mapping results]
+[Lesion mapping results only in word]
 
 #### Figure 6
-[With brains]
+
 ```{r map-roi-allp-plot, echo = FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=9}
 
 map.roi.allp.plt <- plot_grid(choiceV.lab, plot.all.choiceV.Achoice, kV.lab, plot.all.kV.Rk, 
@@ -3164,18 +3159,25 @@ map.roi.allp.plt <- plot_grid(choiceV.lab, plot.all.choiceV.Achoice, kV.lab, plo
 
 print(map.roi.allp.plt)
 
-map.roi.allp.plt.raw <- plot_grid(choiceV.lab, plot.all.choiceV.Achoice.raw, kV.lab, plot.all.kV.Rk.raw, 
-                              ncol = 4, rel_widths = c(0.15,1,0.15,1),
-                              labels = c("b", "", "c", ""),
-                              label_size = axtitle, axis = "tb", align = "h")
+graphname <- paste0(path,'Figure_6.tiff')
 
-print(map.roi.allp.plt.raw)
+if (savefullplots == 1) 
+  {tiff(graphname, units="in", width = 9, height = 6, res = resolution)
+  print(map.roi.allp.plt)
+  dev.off()}
+
+# map.roi.allp.plt.raw <- plot_grid(choiceV.lab, plot.all.choiceV.Achoice.raw, kV.lab, plot.all.kV.Rk.raw, 
+#                               ncol = 4, rel_widths = c(0.15,1,0.15,1),
+#                               labels = c("b", "", "c", ""),
+#                               label_size = axtitle, axis = "tb", align = "h")
+# 
+# print(map.roi.allp.plt.raw)
 
 ```
 
 
 #### Figure 7
-[With brains]
+
 ```{r map-roi-vmpfc-plot, echo = FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=9}
 
 map.roi.vmpfc.plt <- plot_grid(choiceV.lab, plot.vmpfc.choiceV.Achoice, kV.lab, plot.vmpfc.kV.Rk, 
@@ -3185,18 +3187,21 @@ map.roi.vmpfc.plt <- plot_grid(choiceV.lab, plot.vmpfc.choiceV.Achoice, kV.lab, 
 
 print(map.roi.vmpfc.plt)
 
-map.roi.allp.plt.raw <- plot_grid(choiceV.lab, plot.vmpfc.choiceV.Achoice.raw, kV.lab, plot.vmpfc.kV.Rk.raw, 
-                              ncol = 4, rel_widths = c(0.15,1,0.15,1),
-                              labels = c("b", "", "c", ""),
-                              label_size = axtitle, axis = "tb", align = "h")
+graphname <- paste0(path,'Figure_7.tiff')
 
-print(map.roi.allp.plt.raw)
+if (savefullplots == 1) 
+  {tiff(graphname, units="in", width = 9, height = 6, res = resolution)
+  print(map.roi.vmpfc.plt)
+  dev.off()}
+
+# map.roi.allp.plt.raw <- plot_grid(choiceV.lab, plot.vmpfc.choiceV.Achoice.raw, kV.lab, plot.vmpfc.kV.Rk.raw, 
+#                               ncol = 4, rel_widths = c(0.15,1,0.15,1),
+#                               labels = c("b", "", "c", ""),
+#                               label_size = axtitle, axis = "tb", align = "h")
+# 
+# print(map.roi.allp.plt.raw)
 
 ```
-
-
-#### Figure 8
-[Just brains for reward effects]
 
 # Supplement
 
@@ -3216,7 +3221,7 @@ print(b.plt)
 
 ```
 <br>
-**Figure S1. Choice consistency is higher for self than other but no significant effect of vmPFC damage.** Analysis of choice stochasticity `r "<i>\u03B2</i>"` parameters revealed choices in all three groups more consistently followed the relative subjective value between options. However, there were no significant differences between groups in choice consistency overall and importantly no significant interactions between group and recipient in predicting `r "<i>\u03B2</i>"` parameters (Table S7 & Table S8).
+**Figure S1. Choice consistency is higher for self than other but no significant effect of vmPFC damage.** Analysis of choice consistency `r "<i>\u03B2</i>"` parameters revealed choices in all three groups more consistently followed the relative subjective value between options. However, there were no significant differences between groups in choice consistency overall and importantly no significant interactions between group and recipient in predicting `r "<i>\u03B2</i>"` parameters (Table S7 & Table S8).
 
 #### Figure S2
 
@@ -3226,26 +3231,32 @@ print(force.er.plt)
 
 ```
 <br>
-**Figure S2. vmPFC damage decreases the force exerted to gain rewards for another person, compared to oneself, as the effort required increases, particularly for the smallest rewards.** In addition to the group\*recipient and group\*recipient\*effort interactions shown in Figure 5, the linear mixed-effects model of force exerted showed a significant 4-way group\*recipient\*effort\*reward interaction 
-(b=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
+**Figure S2. vmPFC damage decreases the force exerted to gain rewards for another person, compared to oneself, as the effort required increases, particularly for the smallest rewards.** In addition to the group\*recipient and group\*recipient\*effort interactions shown in Figure 5, the linear mixed-effects model of force exerted showed a significant 4-way group\*recipient\*effort\*reward interaction for vmPFC patients compared to healthy controls
+(b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`
 [`r format(round(r.force1$CI_low[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`,
 `r format(round(r.force1$CI_high[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"], digits=2), nsmall=2)`],
-*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"])`; Table S9 & S10). This sensitivity to the reward available and effort required, combined with high overall success rates, suggests vmPFC patients' reduced willingness to exert force for prosocial rewards was not due to an inability to meet the required force or attend to the information in the trial.
+*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. HC)"])`; Table S5). 
+The corresponding interaction for vmPFC patients compared to lesion patients was not significant
+(b<sub>(`r r.force1.full$df_error[1]`)</sub>=`r format(round(r.force1$Coefficient[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`
+[`r format(round(r.force1$CI_low[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`,
+`r format(round(r.force1$CI_high[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. LC)"], digits=2), nsmall=2)`],
+*p*`r pvalrf(r.force1$p[r.force1$Parameter == "Effort * Recipient (Self vs. Other) * Reward * Group (vmPFC vs. LC)"])`.
+This sensitivity to the reward available and effort required, combined with high overall success rates, suggests vmPFC patients' reduced willingness to exert force for prosocial rewards was not due to an inability to meet the required force or attend to the information in the trial.
 
 #### Figure S3
 
-```{r lesion-size-plot, echo = FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=12}
+```{r lesion-size-plot, echo = FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=9.5}
 
 lesion.size.plt <- plot_grid(plot.size.Achoice, plot.size.Rk, plot.size.Echoice, plot.size.Rchoice, ncol = 2, labels = "auto", label_size = axtitle, axis = "tb", align = "h")
 
-lesion.size.plt <- plot_grid(lesion.size.plt, lesion.size.leg, ncol=2, rel_widths = c(1,0.25), rel_heights = c(1,0.15))
+lesion.size.plt <- plot_grid(lesion.size.plt, lesion.size.leg, nrow=2, rel_widths = c(1,0.25), rel_heights = c(1,0.15))
 
 print(lesion.size.plt)
 
 ```
 **Figure S3. No significant correlations between total lesion size and the behavioural predictors for VLSM.** As a control analysis to support the voxel-based lesion symptom mapping (VLSM), we correlated total lesion volume with each of the four behavioural predictors, calculated as the (ranked) participant-level random effects from the generalised linear mixed-effects models of choices and `r "<i>\u039A</i>"` parameters (effect of recipient on choices, effect of reward on choices, effect of effort on choices, effect of recipient on `r "<i>\u039A</i>"` parameters). The lack of significant correlations in all cases suggests that overall lesion size did not confound the VLSM analysis and results are specific to damage in each of the identified subregions.
 
-#### Figure S4
+#### Figure S6
 
 ```{r lesion-SO-allp-plot, echo = FALSE, warning=FALSE, message=FALSE, fig.height=12, fig.width=9}
 
@@ -3260,9 +3271,9 @@ map.SO.allp.plt <- plot_grid(choice.lab, plot.all.choiceV.Ochoice, choice.lab, p
 print(map.SO.allp.plt)
 
 ```
-**Figure S4. Damage to medial vmPFC regions decreases willingness to exert effort for others and increases willingness to obtain self-benefitting rewards.** To further interpret the voxel-based lesion symptom mapping (VLSM) finding of decreased prosociality with damage to portions of vmPFC on the medial wall (areas 14 and 25), we plotted each recipient separately to examine how damage affects **(a)** choices for other **(b)** choices for self **(c)** discounting `r paste(klabel)`s for other and **(d)** discounting `r "<i>\u039A</i>"` parameters for self. We categorised participants by whether they had damage or not in the areas identified in the VLSM analysis for each effect (choices and `r "<i>\u039A</i>"`; see Figure 6A). These plots suggest that decreased prosociality shown by the recipient effects (other vs. self) in the VLSM are driven by both lower willingness to help the other person and higher willingness to work for oneself in patients with damage to these regions.
+**Figure S6. Damage to medial vmPFC regions decreases willingness to exert effort for others and increases willingness to obtain self-benefitting rewards.** To further interpret the voxel-based lesion symptom mapping (VLSM) finding of decreased prosociality with damage to portions of vmPFC on the medial wall (areas 14 and 25), we plotted each recipient separately to examine how damage affects **(a)** choices for other **(b)** choices for self **(c)** discounting `r paste(klabel)`s for other and **(d)** discounting `r "<i>\u039A</i>"` parameters for self. We categorised participants by whether they had damage or not in the areas identified in the VLSM analysis for each effect (choices and `r "<i>\u039A</i>"`; see Figure 6A). Patients with no damage to the identified region had damage elsewhere in the brain. These plots suggest that decreased prosociality shown by the recipient effects (other vs. self) in the VLSM are driven by both lower willingness to help the other person and higher willingness to work for oneself in patients with damage to these regions. The dotted line represents the mean value for the healthy control group for comparison.
 
-#### Figure S5
+#### Figure S7
 
 ```{r lesion-SO-vmpfc-plot, echo = FALSE, warning=FALSE, message=FALSE, fig.height=5, fig.width=9}
 
@@ -3274,9 +3285,9 @@ map.SO.k.plt <- plot_grid(k.lab, plot.vmpfc.kV.Ok, k.lab, plot.vmpfc.kV.Sk,
 print(map.SO.k.plt)
 
 ```
-**Figure S5. Damage to lateral vmPFC increases willingness to help others and decreases willingness to exert effort for oneself.** Our voxel-based lesion symptom mapping (VLSM) analysis identified a lateral portion of vmPFC in area 13 where damage was paradoxically associated with increased prosociality. To further interpret this finding, we extracted the extent of damage for each participant in the region identified in the VLSM analysis of the recipient effect (other vs. self) on `r paste(klabel)`. The corresponding effect on choices was associated with a smaller, overlapping region of area 13 (see Figure 7). Plotting damage in this region against **(a)** discounting `r paste(klabel)` for other and **(b)** discounting `r paste(klabel)` for self separately shows the increase in relative prosociality is driven by both lower discounting (higher willingness to work) for other and higher discounting (lower willingness to work) to some extent for self.
+**Figure S7. Damage to lateral vmPFC compared to other vmPFC subregions leads to relative increases in willingness to help others.** Our voxel-based lesion symptom mapping (VLSM) analysis identified a lateral portion of vmPFC in area 13 where damage was, in contrast, associated with relatively increased prosociality. To further interpret this finding, we extracted the extent of damage for each participant in the region identified in the VLSM analysis of the recipient effect (other vs. self) on `r paste(klabel)` (see Figure 7A). The corresponding effect on choices was associated with a smaller, overlapping region of area 13. Plotting damage in this region against **(a)** discounting `r paste(klabel)` for other and **(b)** discounting `r paste(klabel)` for self separately shows the increase in relative prosociality is driven by both lower discounting (higher willingness to work) for other and higher discounting (lower willingness to work) to some extent for self. The dotted line represents the mean value for the healthy control group for comparison.
 
-#### Table S0 (new S1)
+#### Table S1
 
 ```{r demographics-f, warning=FALSE, message=FALSE, echo=FALSE}
 
@@ -3305,7 +3316,7 @@ kable(r.m,
 
 ```
 
-#### Table S1
+#### Table S2
 
 ```{r credits-models-f, warning=FALSE, message=FALSE, echo=FALSE}
 
@@ -3320,9 +3331,7 @@ if (savecsvs == 1) {write.table(r.credits, file = "output/Table_model_credits.cs
 
 ```
 
-#### Table S
-
-```{r credit-posthoc-f, echo = FALSE, warning=FALSE}
+```{r credit-posthoc-f, echo = FALSE, warning=FALSE, eval=FALSE}
 
 credits.con.all$p.value[!is.na(credits.con.all$p.value)] <- pvalr(credits.con.all$p.value[!is.na(credits.con.all$p.value)])
 
@@ -3332,7 +3341,7 @@ kable(credits.con.all,
       caption = paste0("Post-hoc tests on model of credits")) %>% kable_styling()
 ```
 
-#### Table S2
+#### Table S3
 
 ```{r choice-models-f, warning=FALSE, message=FALSE, echo=FALSE}
 
@@ -3346,9 +3355,7 @@ if (savecsvs == 1) {write.table(r.choice, file = "output/Table_model_choice.csv"
 
 ```
 
-#### Table S
-
-```{r choice-posthoc-f, echo = FALSE, warning=FALSE}
+```{r choice-posthoc-f, echo = FALSE, warning=FALSE, eval=FALSE}
 
 choice.con.all$p.value[!is.na(choice.con.all$p.value)] <- pvalr(choice.con.all$p.value[!is.na(choice.con.all$p.value)])
 
@@ -3358,7 +3365,7 @@ kable(choice.con.all,
       caption = paste0("Post-hoc tests on model of choices")) %>% kable_styling()
 ```
 
-#### Table S3
+#### Table S4
 
 ```{r k-model-f, echo = FALSE, warning=FALSE}
 
@@ -3370,9 +3377,7 @@ kable(r.k,
       caption = paste0("Generalised linear mixed-effects model predicting ", klabel)) %>% kable_styling()
 ```
 
-#### Table S
-
-```{r k-posthoc-f, echo = FALSE, warning=FALSE}
+```{r k-posthoc-f, echo = FALSE, warning=FALSE, eval=FALSE}
 
 k.con.all$p.value[!is.na(k.con.all$p.value)] <- pvalr(k.con.all$p.value[!is.na(k.con.all$p.value)])
 
@@ -3382,7 +3387,7 @@ kable(k.con.all,
       caption = paste0("Post-hoc tests on model of ", klabel)) %>% kable_styling()
 ```
 
-#### Table S4
+#### Table S5
 
 ```{r b-model-f, echo = FALSE, warning=FALSE}
 
@@ -3394,9 +3399,7 @@ kable(r.beta,
       caption = paste0("Generalised linear mixed-effects model predicting ", blabel)) %>% kable_styling()
 ```
 
-#### Table S
-
-```{r b-posthoc-f, echo = FALSE, warning=FALSE}
+```{r b-posthoc-f, echo = FALSE, warning=FALSE, eval=FALSE}
 
 beta.con.all$p.value[!is.na(beta.con.all$p.value)] <- pvalr(beta.con.all$p.value[!is.na(beta.con.all$p.value)])
 
@@ -3406,7 +3409,7 @@ kable(beta.con.all,
       caption = paste0("Post-hoc tests on model of ", blabel)) %>% kable_styling()
 ```
 
-#### Table S5
+#### Table S6
 
 ```{r force-model1-f, warning=FALSE, message=FALSE, echo=FALSE}
 
@@ -3421,9 +3424,7 @@ if (savecsvs == 1) {write.table(r.force1, file = "output/Table_model1_force.csv"
 
 ```
 
-#### Table S
-
-```{r force-posthoc-f, echo = FALSE, warning=FALSE}
+```{r force-posthoc-f, echo = FALSE, warning=FALSE, eval=FALSE}
 
 force1.con.all$p.value[!is.na(force1.con.all$p.value)] <- pvalr(force1.con.all$p.value[!is.na(force1.con.all$p.value)])
 
@@ -3434,7 +3435,7 @@ kable(force1.con.all,
 
 ```
 
-#### Table S6
+#### Table S7
 
 ```{r success-model-f, echo = FALSE, warning=FALSE}
 
@@ -3446,9 +3447,7 @@ kable(r.success,
       caption = paste0("Linear mixed-effects model predicting success")) %>% kable_styling()
 ```
 
-#### Table S
-
-```{r success-posthoc-f, echo = FALSE, warning=FALSE}
+```{r success-posthoc-f, echo = FALSE, warning=FALSE, eval=FALSE}
 
 success.con.all$p.value[!is.na(success.con.all$p.value)] <- pvalr(success.con.all$p.value[!is.na(success.con.all$p.value)])
 
