@@ -11,7 +11,7 @@
 
 #### Step 0 (if data not already in MATLAB structure) - Convert data to the required format from Presentation .log / .csv / .xlsx formats
 
-#### Step 1 - Run_mle_model.m 
+#### Step 1 - Run_em_model.m 
 Script to run and compare models using expectation maximisation fit
 
 ##### Output from script
