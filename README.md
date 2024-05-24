@@ -16,14 +16,14 @@ Script to run and compare models using expectation maximisation fit
 
 ##### Output from script
    - matlab variables
-   	- 's.PL.em'  - contains model results including the model parameters for each participant
+   	- 's.PM.em'  - contains model results including the model parameters for each participant
    - datafiles in specified output directory:
        - EM_fit_parameters_all.csv - estimated parameters for each participant
        - PM_model_fit_statistics_all - model fits
      
 #### Step 2 - Create data files of trial by trial behavioural data (see lme_data_PM_am-mpfc-lc-ol.csv)
 
-#### Step 4 - analysis_PM_vmPFC.Rmd
+#### Step 3 - analysis_PM_vmPFC.Rmd
 Run analysis using R project, script, and files from above output (note sections of this script also plot results from simulation experiments - model identifiability and parameter recovery - see below and use results from lesion analysis).
 
 ### For simulation experiments (ii):
